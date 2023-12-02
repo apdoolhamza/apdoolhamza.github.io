@@ -1,4 +1,3 @@
-
 *{
     padding:0;
     margin:0;
@@ -366,7 +365,6 @@ main .vectorLogo{
     .projects .projectTemplate{
         width:90vw;
         flex-direction: row;
-        justify-content:space-between;
         margin:40px 0;
     }
     .projectTemplate .projectImg{
@@ -376,6 +374,16 @@ main .vectorLogo{
     .projectImg img{
         width:100%;
         height:100%;
+    }
+    .projectImg .fa-crown{
+        position:absolute;
+        margin-left:5.9%;
+        margin-top:2%;
+        color:gold;
+        font-size:24px;
+        padding:11px 9px;
+        background-color: rgba(0, 0, 0, .2);
+        border-radius:50%;
     }
     .projectDetails{
         width:37rem;
@@ -471,6 +479,10 @@ margin-bottom:0;
             max-width:1240px;
             margin:0 auto;
         }
+        .projectImg .fa-crown{
+            margin-left:3.2em;
+            margin-top:1em
+        }
         .footerWrapper .footerSub{
         border-radius:10px 10px 0 0;
         }
@@ -526,7 +538,7 @@ nav ul .modeToggle{
 }
 
 .myProjects .projects{
-    padding:0 70px;
+    padding:0 50px;
  }
  .projects .projectTemplate{
      width:100%;
@@ -535,6 +547,10 @@ nav ul .modeToggle{
  .projectTemplate .projectImg{
      width:100%;
  }
+ .projectImg .fa-crown{
+    margin-left:11.5%;
+    margin-top:3.5%;
+}
  .projectDetails{
      width:100%;
      height:auto;
@@ -544,6 +560,11 @@ nav ul .modeToggle{
  height:auto;
  margin-bottom:25px;
  }
+}
+@media screen and (max-width:700px) {
+    .myProjects .projects{
+        padding:0 40px;
+     }
 }
 @media screen and (max-width:500px) {
     .dev p{
@@ -584,6 +605,9 @@ nav ul .modeToggle{
     .myProjects .projects{
         margin-top:1em;
      }
+     .projectImg .fa-crown{
+       font-size:20px;
+    }
      .mySkils,
     .myProjects{
     margin-top:80px;
