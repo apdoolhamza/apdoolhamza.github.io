@@ -628,9 +628,9 @@ nav ul .modeToggle{
         grid-template-columns: repeat(auto-fill, minmax(250px, auto));
     }
     .cardsContainer .card{
-        width:250px;
-        height:250px;
-        padding:5px;
+        width:260px;
+        height:260px;
+        padding:10px;
         }
      .card i{
         width:2em;
