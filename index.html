@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apdoolhamza - Full-Stack Developer & AI/ML Developer</title>
+<meta name="description" content="Apdoolhamza - Full-Stack Web Developer, AI/ML Developer, UI/UX Designer, and Freelancer">
+<!-- Facebook Og -->
+<meta property="og:title" content="Apdoolhamza - Full-Stack Developer & AI/ML Developer>
+<meta property="og:type" content="Website">
+<meta property="og:url" content="https://apdoolhamza.github.io/">
+<meta property="og:image" content="./assets/imgs/logo.png">
+<meta property="og:description" content="Apdoolhamza - Full-Stack Web Developer, AI/ML Developer, UI/UX Designer, and Freelancer."> 
+<meta property="og:locale" content="en">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@apdoolhamza">
+<meta name="twitter:title" content="Apdoolhamza - Full-Stack Developer & AI/ML Developer">
+<meta name="twitter:description" content="Apdoolhamza - Full-Stack Web Developer, AI/ML Developer, UI/UX Designer, and Freelancer.">
+<meta name="twitter:image" content="./assets/imgs/logo.png">
+<meta name="twitter:url" content="https://apdoolhamza.github.io/">
+<!-- Shortcut icon -->
+<link rel="shortcut icon" href="./assets/imgs/logo.png" type="image/x-icon">
+<!-- Google fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#FF6B00',secondary:'#2A2A2A'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<!-- Custome styles -->
+ <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+<!-- Navigation -->
+<header class="fixed top-0 left-0 w-full z-50 bg-white shadow-sm transition-all py-2 duration-300" id="header">
+<div class="container py-1 max-w-screen-xl mx-auto px-6 sm:px-6 lg:px-16">
+<nav class="flex items-center justify-between">
+<a href="index.html"><img src="./assets/imgs/logo.png" width="60" alt="logo"></a>
+<div class="hidden lg:flex items-center space-x-7">
+<a href="#home" class="nav-link text-gray-800 hover:text-primary transition-colors duration-300 active">Home</a>
+<a href="#about" class="nav-link text-gray-800 hover:text-primary transition-colors duration-300">About</a>
+<a href="#services" class="nav-link text-gray-800 hover:text-primary transition-colors duration-300">Services</a>
+<a href="#tech-stack" class="nav-link text-gray-800 hover:text-primary transition-colors duration-300">Tech Stack</a>
+<a href="#projects" class="nav-link text-gray-800 hover:text-primary transition-colors duration-300">Projects</a>
+<a href="#contact" class="nav-link text-gray-800 hover:text-primary transition-colors duration-300">Contact</a>
+</div>
+<div class="flex items-center space-x-3">
+<div class="hidden lg:flex items-center space-x-3">
+<a href="https://github.com/apdoolhamza/" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-primary transition-colors duration-300">
+<i class="ri-github-fill ri-lg"></i>
+</a>
+<a href="https://www.linkedin.com/in/apdoolhamza/" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-primary transition-colors duration-300">
+<i class="ri-linkedin-fill ri-lg"></i>
+</a>
+<a href="https://twitter.com/apdoolhamza/" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-primary transition-colors duration-300">
+<i class="ri-twitter-fill ri-lg"></i>
+</a>
+</div>
+<button class="lg:hidden w-10 h-10 flex items-center justify-center" id="mobile-menu-button">
+<i class="ri-menu-line ri-lg"></i>
+</button>
+</div>
+</nav>
+<!-- Mobile Menu -->
+<div class="lg:hidden hidden transition-all duration-300 text-center" id="mobile-menu">
+<div class="flex flex-col space-y-4 mt-4">
+<a href="#home" class="text-gray-800 hover:text-primary transition-colors duration-300">Home</a>
+<a href="#about" class="text-gray-800 hover:text-primary transition-colors duration-300">About</a>
+<a href="#services" class="text-gray-800 hover:text-primary transition-colors duration-300">Services</a>
+<a href="#tech-stack" class="text-gray-800 hover:text-primary transition-colors duration-300">Tech Stack</a>
+<a href="#projects" class="text-gray-800 hover:text-primary transition-colors duration-300">Projects</a>
+<a href="#contact" class="text-gray-800 hover:text-primary transition-colors duration-300">Contact</a>
+</div>
+<div class="flex items-center space-x-3 mt-4">
+<a href="https://github.com/apdoolhamza/" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-primary transition-colors duration-300">
+<i class="ri-github-fill ri-lg"></i>
+</a>
+<a href="https://www.linkedin.com/in/apdoolhamza/" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-primary transition-colors duration-300">
+<i class="ri-linkedin-fill ri-lg"></i>
+</a>
+<a href="https://twitter.com/apdoolhamza/" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-primary transition-colors duration-300">
+<i class="ri-twitter-fill ri-lg"></i>
+</a>
+</div>
+</div>
+</div>
+</header>
+<!-- Hero Section -->
+<section id="home" class="pt-24 md:pt-32 mt-5 pb-16 md:pb-24 relative overflow-hidden" style="background-image: url('./assets/imgs/heroBanner.jpg'); background-size: cover; background-position: center;">
+<div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-16">
+<div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-transparent"></div>
+<div class="mx-auto px-3 relative z-10">
+<div class="flex flex-col md:flex-row items-center">
+<div class="w-full md:w-1/2 mb-10 md:mb-0">
+<div class="text-sm font-medium text-primary mb-4">Full-Stack Web Developer</div>
+<h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+Hi, I'm <span class="text-primary">Apdoolhamza</span>
+</h1>
+<div class="text-xl md:text-2xl font-medium mb-6 typing-effect" id="typing-text">
+Full-Stack Developer
+</div>
+<p class="text-gray-600 mb-8 max-w-lg">
+I create exceptional digital experiences through innovative web solutions, intuitive UI/UX design, and cutting-edge AI/ML development. Let's transform your ideas into reality.
+</p>
+<div class="flex flex-wrap gap-4">
+<a href="#about" class="bg-primary text-white px-6 py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors duration-300 whitespace-nowrap">
+Hire Me
+</a>
+<a href="#projects" class="bg-transparent border-2 border-primary text-primary px-6 py-3 !rounded-button font-medium hover:bg-primary/10 transition-colors duration-300 whitespace-nowrap">
+View Projects
+</a>
+</div>
+</div>
+<div class="w-full md:w-1/2 flex justify-center md:justify-end">
+<img src="./assets/imgs/heroImage.jpg" alt="Apdoolhamza" class="rounded-full w-64 h-64 md:w-80 md:h-80 object-cover object-top shadow-xl border-4 border-white">
+</div>
+</div>
+</div>
+<!-- Floating tech icons -->
+<div class="hidden md:block absolute bottom-10 left-10 animate-bounce delay-100">
+<div class="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-lg">
+<i class="ri-html5-fill ri-lg text-[#E34F26]"></i>
+</div>
+</div>
+<div class="hidden md:block absolute top-32 right-32 animate-bounce delay-300">
+<div class="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-lg">
+<i class="ri-css3-fill ri-lg text-[#1572B6]"></i>
+</div>
+</div>
+<div class="hidden md:block absolute bottom-32 right-48 animate-bounce delay-500">
+<div class="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-lg">
+<i class="ri-reactjs-line ri-lg text-[#61DAFB]"></i>
+</div>
+</div>
+</div>
+</section>
+
+
+<!-- About Section -->
+<section id="about" class="py-16 md:py-24 bg-gray-50">
+<div class="container max-w-screen-xl mx-auto px-6 sm:px-6 lg:px-16">
+<div class="text-center mb-16">
+<h2 class="text-3xl md:text-4xl font-bold mb-4">About Me</h2>
+<div class="w-24 h-1 bg-primary mx-auto"></div>
+</div>
+<div class="flex flex-col md:flex-row items-center gap-12">
+<div class="w-full md:w-2/5">
+<img src="./assets/imgs/aboutBanner.jpg" alt="About Apdoolhamza" class="rounded-lg shadow-xl w-full h-auto object-cover object-top">
+</div>
+<div class="w-full md:w-3/5">
+<p class="text-gray-600 mb-6">I'm a Full-Stack Web Developer with years of experience in web development, UI/UX design, and AI/ML development, I've had the privilege of working with diverse clients across various industries. My journey began as a self-taught developer, and I've since evolved into a versatile professional who can seamlessly navigate both frontend and backend technologies.
+</p>
+<p class="text-gray-600 mb-8">
+I approach each project with a problem-solving mindset, focusing on creating solutions that are not only technically sound but also user-friendly and visually appealing. Whether working independently or collaborating with teams, I bring dedication, creativity, and technical expertise to every project.
+</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+<div>
+<h4 class="font-semibold mb-3">Frontend Development</h4>
+<div class="progress-bar mb-4">
+<div class="progress-value bg-primary" style="width: 95%"></div>
+</div>
+<h4 class="font-semibold mb-3">Backend Development</h4>
+<div class="progress-bar mb-4">
+<div class="progress-value bg-primary" style="width: 90%"></div>
+</div>
+<h4 class="font-semibold mb-3">UI/UX Design</h4>
+<div class="progress-bar">
+<div class="progress-value bg-primary" style="width: 85%"></div>
+</div>
+</div>
+<div>
+<h4 class="font-semibold mb-3">AI/ML Development</h4>
+<div class="progress-bar mb-4">
+<div class="progress-value bg-primary" style="width: 60%"></div>
+</div>
+<h4 class="font-semibold mb-3">Project Management</h4>
+<div class="progress-bar mb-4">
+<div class="progress-value bg-primary" style="width: 85%"></div>
+</div>
+<h4 class="font-semibold mb-3">Problem Solving</h4>
+<div class="progress-bar">
+<div class="progress-value bg-primary" style="width: 95%"></div>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-6 mb-8">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full text-primary">
+<i class="ri-briefcase-line ri-lg"></i>
+</div>
+<div>
+<div class="font-semibold" data-start="2021-05" style="text-transform:capitalize;">+ Years</div>
+<div class="text-sm text-gray-500">Experience</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full text-primary">
+<i class="ri-code-box-line ri-lg"></i>
+</div>
+<div>
+<div class="font-semibold">70+</div>
+<div class="text-sm text-gray-500">Projects</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full text-primary">
+<i class="ri-user-smile-line ri-lg"></i>
+</div>
+<div>
+<div class="font-semibold">50+</div>
+<div class="text-sm text-gray-500">Clients</div>
+</div>
+</div>
+</div>
+<a href="./Abdulmajid_Hamza_CV.pdf" download class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors duration-300 whitespace-nowrap">
+<i class="ri-download-line"></i> Download CV
+</a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="py-16 md:py-24 max-w-screen-xl mx-auto px-6 sm:px-6 lg:px-16">
+<div class="container">
+<div class="text-center mb-16">
+<h2 class="text-3xl md:text-4xl font-bold mb-4">My Services</h2>
+<div class="w-24 h-1 bg-primary mx-auto mb-6"></div>
+<p class="text-gray-600 max-w-2xl mx-auto">
+I offer a comprehensive range of services to help businesses and individuals establish a strong digital presence and leverage cutting-edge technologies.
+</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Web Development -->
+<div class="service-card rounded-lg p-8 shadow-lg border border-gray-100">
+<div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full text-primary mb-6">
+<i class="ri-code-s-slash-line ri-2x"></i>
+</div>
+<h3 class="text-xl font-bold mb-4">Web Development</h3>
+<p class="text-gray-600 mb-6">
+I create responsive, high-performance websites and web applications tailored to your specific needs, ensuring optimal user experience across all devices.
+</p>
+<ul class="mb-6 space-y-2">
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>Custom Website Development</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>E-commerce Solutions</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>Web Application Development</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>API Development & Integration</span>
+</li>
+</ul>
+<a href="#contact" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors duration-300">
+Request Service <i class="ri-arrow-right-line"></i>
+</a>
+</div>
+<!-- UI/UX Design -->
+<div class="service-card rounded-lg p-8 shadow-lg border border-gray-100">
+<div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full text-primary mb-6">
+<i class="ri-layout-4-line ri-2x"></i>
+</div>
+<h3 class="text-xl font-bold mb-4">UI/UX Design</h3>
+<p class="text-gray-600 mb-6">
+I design intuitive, visually appealing interfaces that enhance user engagement and satisfaction, focusing on both aesthetics and functionality.
+</p>
+<ul class="mb-6 space-y-2">
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>User Interface Design</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>User Experience Design</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>Wireframing & Prototyping</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>Design System Creation</span>
+</li>
+</ul>
+<a href="#contact" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors duration-300">
+Request Service <i class="ri-arrow-right-line"></i>
+</a>
+</div>
+<!-- AI/ML Development -->
+<div class="service-card rounded-lg p-8 shadow-lg border border-gray-100">
+<div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full text-primary mb-6">
+<i class="ri-robot-line ri-2x"></i>
+</div>
+<h3 class="text-xl font-bold mb-4">AI/ML Development</h3>
+<p class="text-gray-600 mb-6">
+I develop intelligent solutions leveraging artificial intelligence and machine learning technologies to solve complex problems and drive business growth.
+</p>
+<ul class="mb-6 space-y-2">
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>Machine Learning Models</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>Natural Language Processing</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>Computer Vision Solutions</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>AI Integration in Applications</span>
+</li>
+</ul>
+<a href="#contact" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors duration-300">
+Request Service <i class="ri-arrow-right-line"></i>
+</a>
+</div>
+<!-- Mobile App Development -->
+<div class="service-card rounded-lg p-8 shadow-lg border border-gray-100">
+<div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full text-primary mb-6">
+<i class="ri-smartphone-line ri-2x"></i>
+</div>
+<h3 class="text-xl font-bold mb-4">Mobile App Development</h3>
+<p class="text-gray-600 mb-6">
+I build native and cross-platform mobile applications that provide seamless experiences across Android devices, focusing on performance and usability.
+</p>
+<ul class="mb-6 space-y-2">
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>Android Development</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>Cross-Platform Solutions</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>App UI/UX Design</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>App Maintenance & Updates</span>
+</li>
+</ul>
+<a href="#contact" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors duration-300">
+Request Service <i class="ri-arrow-right-line"></i>
+</a>
+</div>
+<!-- Consulting & Strategy -->
+<div class="service-card rounded-lg p-8 shadow-lg border border-gray-100">
+<div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full text-primary mb-6">
+<i class="ri-lightbulb-line ri-2x"></i>
+</div>
+<h3 class="text-xl font-bold mb-4">Consulting & Strategy</h3>
+<p class="text-gray-600 mb-6">
+I provide expert guidance on technology selection, digital transformation, and development strategies to help you make informed decisions.
+</p>
+<ul class="mb-6 space-y-2">
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>Technology Consulting</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>Digital Transformation</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>Technical Architecture</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>Project Planning</span>
+</li>
+</ul>
+<a href="#contact" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors duration-300">
+Request Service <i class="ri-arrow-right-line"></i>
+</a>
+</div>
+<!-- Training & Workshops -->
+<div class="service-card rounded-lg p-8 shadow-lg border border-gray-100">
+<div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full text-primary mb-6">
+<i class="ri-graduation-cap-line ri-2x"></i>
+</div>
+<h3 class="text-xl font-bold mb-4">Training & Workshops</h3>
+<p class="text-gray-600 mb-6">
+I conduct comprehensive training sessions and workshops on various technologies and development methodologies for teams and individuals.
+</p>
+<ul class="mb-6 space-y-2">
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>Web Development Training</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>UI/UX Design Workshops</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>AI/ML Fundamentals</span>
+</li>
+<li class="flex items-start gap-2">
+<i class="ri-check-line text-primary mt-1"></i>
+<span>Custom Training Programs</span>
+</li>
+</ul>
+<a href="#contact" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors duration-300">
+Request Service <i class="ri-arrow-right-line"></i>
+</a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Tech Stack Section -->
+<section id="tech-stack" class="py-16 md:py-24 bg-gray-50">
+<div class="container max-w-screen-xl mx-auto px-6 sm:px-6 lg:px-16">
+<div class="text-center mb-16">
+<h2 class="text-3xl md:text-4xl font-bold mb-4">My Tech Stack</h2>
+<div class="w-24 h-1 bg-primary mx-auto mb-6"></div>
+<p class="text-gray-600 max-w-2xl mx-auto">
+I work with a diverse range of technologies to deliver robust, scalable, and innovative solutions tailored to your specific requirements.
+</p>
+</div>
+<!-- Frontend Technologies -->
+<div class="mb-16">
+<h3 class="text-2xl font-bold mb-8 text-center">Frontend Development</h3>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-html5-fill ri-3x text-[#E34F26]"></i>
+</div>
+<h4 class="font-semibold text-center">HTML5</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2021-05">+ years</div>
+</div>
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-css3-fill ri-3x text-[#1572B6]"></i>
+</div>
+<h4 class="font-semibold text-center">CSS3</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2021-05">+ years</div>
+</div>
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-javascript-fill ri-3x text-[#F7DF1E]"></i>
+</div>
+<h4 class="font-semibold text-center">JavaScript</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2021-05">+ years</div>
+</div>
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-bootstrap-fill ri-3x text-[#7952B3]"></i>
+</div>
+<h4 class="font-semibold text-center">Bootstrap</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2022-01">+ years</div>
+</div>
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-tailwind-css-fill ri-3x text-[#4FC08D]"></i>
+</div>
+<h4 class="font-semibold text-center">Tailwind</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2023-01">+ years</div>
+</div>
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-reactjs-line ri-3x text-[#61DAFB]"></i>
+</div>
+<h4 class="font-semibold text-center">ReactJS</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2022-01">+ years</div>
+</div>
+</div>
+</div>
+<!-- Backend Technologies -->
+<div class="mb-16">
+<h3 class="text-2xl font-bold mb-8 text-center">Backend Development</h3>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-nodejs-line ri-3x text-[#339933]"></i>
+</div>
+<h4 class="font-semibold text-center">Node.js</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2023-01">+ years</div>
+</div>
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-php-line ri-3x text-[#777BB4]"></i>
+</div>
+<h4 class="font-semibold text-center">PHP</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2021-10">+ years</div>
+</div>
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-database-2-line ri-3x text-[#4479A1]"></i>
+</div>
+<h4 class="font-semibold text-center">MySQL</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2021-10">+ years</div>
+</div>
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-database-2-line ri-3x text-[#47A248]"></i>
+</div>
+<h4 class="font-semibold text-center">MongoDB</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2023-01">+ years</div>
+</div>
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-server-line ri-3x text-[#FF9900]"></i>
+</div>
+<h4 class="font-semibold text-center">AWS</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2023-01">+ years</div>
+</div>
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-firebase-line ri-3x text-[#FFCA28]"></i>
+</div>
+<h4 class="font-semibold text-center">Firebase</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2023-01">+ years</div>
+</div>
+</div>
+</div>
+<!-- AI/ML Technologies -->
+<div>
+<h3 class="text-2xl font-bold mb-8 text-center">AI/ML Development</h3>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-python-line ri-3x text-[#3776AB]"></i>
+</div>
+<h4 class="font-semibold text-center">Python</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2023-08">+ years</div>
+</div>
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-tensorflow-line ri-3x text-[#FF6F00]"></i>
+</div>
+<h4 class="font-semibold text-center">TensorFlow</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2024-01">+ years</div>
+</div>
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-file-code-line ri-3x text-[#EE4C2C]"></i>
+</div>
+<h4 class="font-semibold text-center">PyTorch</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2024-01">+ years</div>
+</div>
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-bar-chart-grouped-line ri-3x text-[#F37626]"></i>
+</div>
+<h4 class="font-semibold text-center">Scikit-learn</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2024-01">+ years</div>
+</div>
+<div class="flex flex-col items-center p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+<div class="w-16 h-16 flex items-center justify-center mb-4">
+<i class="ri-openai-fill ri-3x text-[#412991]"></i>
+</div>
+<h4 class="font-semibold text-center">OpenAI</h4>
+<div class="text-sm text-gray-500 mt-2" data-start="2024-01">+ years</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects" class="py-16 md:py-24 max-w-screen-xl mx-auto px-6 sm:px-6 lg:px-16">
+<div class="container">
+<div class="text-center mb-16">
+<h2 class="text-3xl md:text-4xl font-bold mb-4">My Projects</h2>
+<div class="w-24 h-1 bg-primary mx-auto mb-6"></div>
+<p class="text-gray-600 max-w-2xl mx-auto">
+Explore a selection of my recent projects showcasing my expertise in web development, UI/UX design, and AI/ML development.
+</p>
+</div>
+<!-- Project Filters -->
+<div class="flex flex-wrap justify-center gap-4 mb-12">
+<button class="filter-btn active px-6 py-2 !rounded-button bg-primary text-white font-medium whitespace-nowrap" data-filter="all">
+All Projects
+</button>
+<button class="filter-btn px-6 py-2 !rounded-button bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition-colors duration-300 whitespace-nowrap" data-filter="web">
+Web Development
+</button>
+<button class="filter-btn px-6 py-2 !rounded-button bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition-colors duration-300 whitespace-nowrap" data-filter="ui">
+UI/UX Design
+</button>
+<button class="filter-btn px-6 py-2 !rounded-button bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition-colors duration-300 whitespace-nowrap" data-filter="ai">
+AI/ML Development
+</button>
+</div>
+<!-- Projects Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Project 1 -->
+<div class="project-card rounded-lg overflow-hidden shadow-lg" data-category="web">
+<div class="relative h-64 overflow-hidden">
+<span class="px-5 py-3 absolute text-white font-medium bg-green-200 text-green-800 text-xs">
+	Free
+</span>
+<img src="./assets/imgs/projectsImg/portfolio.png" alt="Fitness App UI Design" class="w-full h-full object-cover object-top">
+<div class="project-overlay absolute inset-0 flex items-center justify-center">
+<div class="flex gap-3">
+<a href="https://github.com/apdoolhamza/apdoolhamza.github.io" class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-primary hover:bg-primary hover:text-white transition-colors duration-300">
+<i class="ri-github-fill"></i>
+</a>
+</div>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold mb-2">Portfolio Website for Devs</h3>
+<p class="text-gray-600 mb-4">
+A professional developers portfolio built to highlight web development, UI/UX design, and AI/ML expertise.
+</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">HTML</span>
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">CSS</span>
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">Tailwind</span>
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">JavaScript<span>
+</div>
+</div>
+</div>
+<!-- Project 2 -->
+<div class="project-card rounded-lg overflow-hidden shadow-lg" data-category="web">
+<div class="relative h-64 overflow-hidden">
+<span class="px-5 py-3 absolute text-white font-medium bg-green-200 text-green-800 text-xs">
+	Free
+</span>
+<img src="./assets/imgs/projectsImg/chatbot.png" alt="ChatBot & Image Generator" class="w-full h-full object-cover object-top">
+<div class="project-overlay absolute inset-0 flex items-center justify-center">
+<div class="flex gap-3">
+<a href="https://github.com/apdoolhamza/ChatBot-Image-Generator" class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-primary hover:bg-primary hover:text-white transition-colors duration-300">
+<i class="ri-github-fill"></i>
+</a>
+</div>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold mb-2">ChatBot & Image Generator</h3>
+<p class="text-gray-600 mb-4">
+An AI-powered web application that combines natural language chatbot interaction and image generation using advanced API integrations.
+</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">HTML</span>
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">PHP</span>
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">MySQL</span>
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">APIs</span>
+</div>
+</div>
+</div>
+<!-- Project 3 -->
+<div class="project-card rounded-lg overflow-hidden shadow-lg" data-category="ui">
+<div class="relative h-64 overflow-hidden">
+<span class="px-5 py-3 absolute text-white font-medium bg-orange-100 text-orange-800 text-xs">
+Paid
+</span>
+<img src="./assets/imgs/projectsImg/uiux.jpg" alt="VTU Web App UI/UX Design" class="w-full h-full object-cover object-top">
+<div class="project-overlay absolute inset-0 flex items-center justify-center">
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold mb-2">VTU Web App UI/UX Design</h3>
+<p class="text-gray-600 mb-4">
+A modern and intuitive UI/UX design for a Virtual Top-Up (VTU) web application, created in Figma.
+</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">Figma</span>
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">Sketch</span>
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">UI/UX</span>
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">Prototyping</span>
+</div>
+</div>
+</div>
+<!-- Project 4 -->
+<div class="project-card rounded-lg overflow-hidden shadow-lg" data-category="ai">
+<div class="relative h-64 overflow-hidden">
+<span class="px-5 py-3 absolute text-white font-medium bg-orange-100 text-orange-800 text-xs">
+Paid
+</span>
+<img src="./assets/imgs/projectsImg/malariaDia.png" alt="Malaria Diagnosis System" class="w-full h-full object-cover object-top">
+<div class="project-overlay absolute inset-0 flex items-center justify-center">
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold mb-2">Malaria Diagnosis System</h3>
+<p class="text-gray-600 mb-4">
+A predictive web app that diagnoses Malaria based on patient-reported symptoms using ML models trained on custom health data.
+</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">Python</span>
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">Sklearn</span>
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">pandas</span>
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">Flask</span>
+</div>
+</div>
+</div>
+<!-- Project 5 -->
+<div class="project-card rounded-lg overflow-hidden shadow-lg" data-category="ai">
+<div class="relative h-64 overflow-hidden">
+<span class="px-5 py-3 absolute text-white font-medium bg-green-200 text-green-800 text-xs">
+Free
+</span>
+<img src="./assets/imgs/projectsImg/SmsSpam.png" alt="Image SMS Spam Classifier" class="w-full h-full object-cover object-top">
+<div class="project-overlay absolute inset-0 flex items-center justify-center">
+<div class="flex gap-3">
+<a href="https://github.com/apdoolhamza/SMS-Spam-Classifier" class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-primary hover:bg-primary hover:text-white transition-colors duration-300">
+<i class="ri-github-fill"></i>
+</a>
+</div>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-bold mb-2">SMS Spam Classifier</h3>
+<p class="text-gray-600 mb-4">
+A smart ML model that classifies SMS messages as "Spam" or "Ham" (not spam) with high accuracy using natural language processing techniques.
+</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">Python</span>
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">Sklearn</span>
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">pandas</span>
+<span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">Flask</span>
+</div>
+</div>
+</div>
+</div>
+<div class="text-center mt-12">
+<a href="https://github.com/apdoolhamza?tab=repositories" class="bg-primary text-white px-8 py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors duration-300 whitespace-nowrap">
+See More Projects
+</a>
+</div>
+</div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-16 md:py-24 bg-gray-50">
+<div class="container max-w-screen-xl mx-auto px-6 sm:px-6 lg:px-16">
+<div class="text-center mb-16">
+<h2 class="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
+<div class="w-24 h-1 bg-primary mx-auto mb-6"></div>
+<p class="text-gray-600 max-w-2xl mx-auto">
+Have a project in mind or want to discuss a potential collaboration? I'd love to hear from you. Feel free to reach out.
+</p>
+</div>
+<div class="flex flex-col lg:flex-row" style="justify-content: center;align-items:center;">
+<div class="w-full lg:w-1/2">
+<div class="bg-white p-8 rounded-lg shadow-lg h-full">
+<div class="space-y-6">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full text-primary flex-shrink-0">
+<i class="ri-map-pin-line ri-lg"></i>
+</div>
+<div>
+<h4 class="font-semibold mb-1">Location</h4>
+<p class="text-gray-600">Katsina State, Nigeria</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full text-primary flex-shrink-0">
+<i class="ri-mail-line ri-lg"></i>
+</div>
+<div>
+<h4 class="font-semibold mb-1">Email</h4>
+<a href="mailto:apdoolhamza@gmail.com" class="text-gray-600 hover:text-primary transition-colors duration-300">apdoolhamza@gmail.com</a>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full text-primary flex-shrink-0">
+<i class="ri-phone-line ri-lg"></i>
+</div>
+<div>
+<h4 class="font-semibold mb-1">Phone</h4>
+<a href="tel:+2348138028142" class="text-gray-600 hover:text-primary transition-colors duration-300">+234 8138 028 142</a>
+</div>
+</div>
+</div>
+<div class="mt-10">
+<h4 class="font-semibold mb-4">Connect With Me</h4>
+<div class="flex space-x-4">
+<a href="https://github.com/apdoolhamza/" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-600 hover:bg-primary hover:text-white transition-colors duration-300">
+<i class="ri-github-fill"></i>
+</a>
+<a href="https://www.linkedin.com/in/apdoolhamza/" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-600 hover:bg-primary hover:text-white transition-colors duration-300">
+<i class="ri-linkedin-fill"></i>
+</a>
+<a href="https://twitter.com/apdoolhamza/" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-600 hover:bg-primary hover:text-white transition-colors duration-300">
+<i class="ri-twitter-fill"></i>
+</a>
+<a href="https://www.facebook.com/apdoolhamza/" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-600 hover:bg-primary hover:text-white transition-colors duration-300">
+<i class="ri-facebook-fill"></i>
+</a>
+<a href="https://t.me/apdoolhamza/" class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full text-gray-600 hover:bg-primary hover:text-white transition-colors duration-300">
+<i class="ri-telegram-fill"></i>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white pb-4 pt-7">
+<div class="container max-w-screen-xl mx-auto px-6 sm:px-6 lg:px-16">
+<div class="text-center">
+<div>
+<div class="flex space-x-4 pt-3 pb-5" style="justify-content: center;align-items: center;">
+<a href="https://github.com/apdoolhamza/" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors duration-300" >
+<i class="ri-github-fill text-xl"></i>
+</a>
+<a href="https://www.linkedin.com/in/apdoolhamza/" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors duration-300">
+<i class="ri-linkedin-fill text-xl"></i>
+</a>
+<a href="https://twitter.com/apdoolhamza/" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors duration-300">
+<i class="ri-twitter-fill text-xl"></i>
+</a>
+<a href="https://www.facebook.com/apdoolhamza/" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors duration-300">
+<i class="ri-facebook-circle-fill text-xl"></i>
+</a>
+<a href="https://t.me/apdoolhamza/" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary transition-colors duration-300">
+<i class="ri-telegram-fill text-xl"></i>
+</a>
+</div>
+</div>
+</div>
+<div class="border-t border-gray-800 pt-4">
+<div class="flex flex-col md:flex-row justify-between items-center">
+<p class="text-gray-400 mb-2 md:mb-0 text-sm Currantyear"></p>
+<script>
+    document.querySelector('.Currantyear').innerHTML = "&copy; " + new Date().getFullYear();
+</script>
+<div class="flex space-x-6 text-sm text-gray-400">
+🧡&nbsp;<a href="https://github.com/apdoolhamza/"> apdoolhamza</a>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<!-- Back to Top Button -->
+<button class="back-to-top fixed bottom-8 right-8 w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full shadow-lg z-50 opacity-0 invisible transition-all duration-300" id="back-to-top">
+<i class="ri-arrow-up-line ri-lg"></i>
+</button>
+
+<!-- Scripts -->
+<script src="./assets/js/script.js"></script>
+</body>
+</html>

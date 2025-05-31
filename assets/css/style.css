@@ -1,0 +1,160 @@
+:where([class^="ri-"])::before { content: "\f3c2"; }
+:root {
+--light-bg: #ffffff;
+--light-text: #2A2A2A;
+--light-secondary: #4B5563;
+--light-accent: #E5E7EB;
+--accent-bg: #2f2f2f;
+}
+body {
+font-family: 'Inter', sans-serif;
+transition: background-color 0.3s, color 0.3s;
+}
+h1, h2, h3, h4, h5, h6 {
+font-family: 'Poppins', sans-serif;
+}
+.card {
+transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+transform: translateY(-5px);
+}
+.progress-bar {
+height: 8px;
+border-radius: 4px;
+background-color: var(--accent-bg);
+overflow: hidden;
+}
+.progress-value {
+height: 100%;
+border-radius: 4px;
+background-color: var(--primary-color);
+transition: width 1s ease-in-out;
+}
+.custom-checkbox {
+appearance: none;
+-webkit-appearance: none;
+width: 20px;
+height: 20px;
+border: 2px solid #D1D5DB;
+border-radius: 4px;
+outline: none;
+cursor: pointer;
+position: relative;
+}
+.custom-checkbox:checked {
+background-color: #FF6B00;
+border-color: #FF6B00;
+}
+.custom-checkbox:checked::after {
+content: '';
+position: absolute;
+top: 3px;
+left: 6px;
+width: 6px;
+height: 10px;
+border: solid white;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+.nav-link {
+position: relative;
+}
+.nav-link::after {
+content: '';
+position: absolute;
+width: 0;
+height: 2px;
+bottom: -2px;
+left: 0;
+background-color: #FF6B00;
+transition: width 0.3s;
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+width: 100%;
+}
+.typing-effect::after {
+content: '|';
+animation: blink 1s infinite;
+}
+@keyframes blink {
+0%, 100% { opacity: 1; }
+50% { opacity: 0; }
+}
+input, textarea {
+outline: none;
+transition: border-color 0.3s;
+}
+input:focus, textarea:focus {
+border-color: #FF6B00;
+}
+.service-card {
+transition: transform 0.3s, box-shadow 0.3s;
+}
+.service-card:hover {
+transform: translateY(-10px);
+}
+.project-card {
+overflow: hidden;
+}
+.project-card img {
+transition: transform 0.5s;
+}
+.project-card:hover img {
+transform: scale(1.05);
+}
+.project-overlay {
+background: rgba(0, 0, 0, 0.7);
+opacity: 0;
+transition: opacity 0.3s;
+}
+.project-card:hover .project-overlay {
+opacity: 1;
+}
+.testimonial-card {
+transition: transform 0.3s;
+}
+.testimonial-card:hover {
+transform: translateY(-5px);
+}
+.blog-card {
+transition: transform 0.3s;
+}
+.blog-card:hover {
+transform: translateY(-5px);
+}
+.contact-form input,
+.contact-form textarea {
+transition: border-color 0.3s;
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+border-color: #FF6B00;
+}
+.social-icon {
+transition: transform 0.3s, color 0.3s;
+}
+.social-icon:hover {
+transform: translateY(-3px);
+color: #FF6B00;
+}
+.back-to-top {
+transition: transform 0.3s, opacity 0.3s;
+opacity: 0;
+visibility: hidden;
+}
+.back-to-top.visible {
+opacity: 1;
+visibility: visible;
+}
+.back-to-top:hover {
+transform: translateY(-5px);
+}
+.filter-btn {
+transition: background-color 0.3s, color 0.3s;
+}
+.filter-btn.active {
+background-color: #FF6B00;
+color: white;
+}
