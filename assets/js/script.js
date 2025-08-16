@@ -73,7 +73,7 @@ link.classList.add('active');
 // typing-effect-script
 document.addEventListener('DOMContentLoaded', function() {
 const typingText = document.getElementById('typing-text');
-const texts = ['Full-Stack Web Developer', 'AI/ML Developer', 'UI/UX Designer', 'Freelancer', 'ADevsHUB Founder'];
+const texts = ['Full-Stack Web Developer', 'AI/ML Engineer', 'UI/UX Designer', 'Freelancer'];
 let textIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
