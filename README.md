@@ -1,4 +1,4 @@
-![Project Screenshot](assets/imgs/projectsImg/portfolio.png)
+
 
 # Portfolio Website - Template for Developers🔥
 
