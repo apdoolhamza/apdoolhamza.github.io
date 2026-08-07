@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUK SGES • Entrepreneurship & Innovation Quiz</title>
+<style>
+  :root {
+    --primary: #1a365d;
+    --primary-light: #2b6cb0;
+    --accent: #c53030;
+    --success: #276749;
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --text: #1a202c;
+    --muted: #718096;
+    --border: #e2e8f0;
+    --shadow: 0 4px 20px rgba(0,0,0,0.07);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  .container { max-width: 860px; margin: 0 auto; padding: 16px; }
+  header {
+    background: linear-gradient(135deg, #1a365d, #2b6cb0);
+    color: white;
+    padding: 26px 18px;
+    text-align: center;
+    border-radius: 0 0 22px 22px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+  header h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+  header p { opacity: 0.9; font-size: 0.92rem; }
+  .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    margin-top: 10px;
+  }
+
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 24px 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+  }
+  .card h2 { font-size: 1.15rem; margin-bottom: 12px; color: var(--primary); }
+
+  /* Session selector */
+  .session-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  @media (max-width: 520px) {
+    .session-grid { grid-template-columns: 1fr; }
+  }
+  .session-card {
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    background: #f8fafc;
+  }
+  .session-card:hover { border-color: var(--primary-light); background: #ebf8ff; }
+  .session-card.selected {
+    border-color: var(--primary);
+    background: #ebf8ff;
+    box-shadow: 0 0 0 3px rgba(43,108,176,0.2);
+  }
+  .session-card .title { font-weight: 700; font-size: 0.95rem; color: var(--primary); }
+  .session-card .meta { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+  .session-card .count {
+    display: inline-block;
+    margin-top: 8px;
+    background: var(--primary);
+    color: white;
+    font-size: 0.75rem;
+    padding: 2px 10px;
+    border-radius: 12px;
+  }
+
+  /* Range slider */
+  .slider-wrap { margin: 20px 0 10px; }
+  .slider-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+  .slider-label strong { color: var(--primary); }
+  input[type="range"] {
+    width: 100%;
+    height: 8px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #e2e8f0;
+    border-radius: 4px;
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    border: 3px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    border: 3px solid white;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 14px 26px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+  }
+  .btn:hover { background: var(--primary-light); transform: translateY(-1px); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+  }
+  .btn-secondary:hover { background: #ebf8ff; }
+  .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .btn-group .btn { flex: 1; min-width: 140px; }
+
+  /* Progress */
+  .progress-wrap { margin-bottom: 16px; }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.84rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .progress-bar {
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  .question-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 22px 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+  .q-number { font-size: 0.78rem; color: var(--primary-light); font-weight: 600; margin-bottom: 6px; }
+  .question-text { font-size: 1.08rem; font-weight: 600; margin-bottom: 18px; line-height: 1.45; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    background: #f7fafc;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+    font-size: 0.93rem;
+  }
+  .option:hover:not(.disabled) { border-color: var(--primary-light); background: #ebf8ff; }
+  .option.selected { border-color: var(--primary); background: #ebf8ff; }
+  .option.correct { border-color: var(--success); background: #f0fff4; }
+  .option.wrong { border-color: var(--accent); background: #fff5f5; }
+  .option.disabled { cursor: default; opacity: 0.9; }
+  .opt-letter {
+    min-width: 26px; height: 26px; border-radius: 50%;
+    background: #e2e8f0; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.82rem; flex-shrink: 0;
+  }
+  .option.selected .opt-letter, .option.correct .opt-letter { background: var(--primary); color: white; }
+  .option.wrong .opt-letter { background: var(--accent); color: white; }
+
+  .feedback {
+    margin-top: 14px; padding: 11px 14px; border-radius: 10px;
+    font-size: 0.88rem; display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct { background: #f0fff4; color: var(--success); border: 1px solid #9ae6b4; }
+  .feedback.wrong { background: #fff5f5; color: var(--accent); border: 1px solid #feb2b2; }
+
+  .nav-btns { display: flex; gap: 10px; margin-top: 16px; }
+  .nav-btns .btn { flex: 1; padding: 12px; }
+
+  /* Result */
+  .score-circle {
+    width: 130px; height: 130px; border-radius: 50%;
+    background: conic-gradient(var(--primary) calc(var(--pct) * 1%), #e2e8f0 0);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px; position: relative;
+  }
+  .score-circle::before {
+    content: ''; position: absolute; width: 102px; height: 102px;
+    background: white; border-radius: 50%;
+  }
+  .score-inner { position: relative; z-index: 1; text-align: center; }
+  .score-inner .big { font-size: 1.85rem; font-weight: 800; color: var(--primary); }
+  .score-inner .small { font-size: 0.82rem; color: var(--muted); }
+  .result-msg { text-align: center; font-size: 1.12rem; font-weight: 600; margin-bottom: 4px; }
+  .result-sub { text-align: center; color: var(--muted); margin-bottom: 20px; font-size: 0.92rem; }
+
+  .review-item {
+    background: #f7fafc; border-radius: 10px; padding: 13px;
+    margin-bottom: 10px; border-left: 4px solid #cbd5e0;
+  }
+  .review-item.correct { border-left-color: var(--success); }
+  .review-item.wrong { border-left-color: var(--accent); }
+  .review-q { font-weight: 600; margin-bottom: 5px; font-size: 0.92rem; }
+  .review-a { font-size: 0.82rem; color: var(--muted); }
+  .correct-ans { color: var(--success); font-weight: 600; }
+  .your-ans.wrong { color: var(--accent); font-weight: 600; }
+
+  footer {
+    text-align: center; padding: 22px 14px; color: var(--muted); font-size: 0.78rem;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Entrepreneurship & Innovation</h1>
+    <p>Bayero University, Kano • SGES</p>
+    <div class="badge">EEP 3201 / ENT 211 • Past Questions by Session</div>
+  </header>
+
+  <div class="container">
+    <!-- ============ START / SELECT SCREEN ============ -->
+    <div id="start-screen" class="screen active">
+      <div class="card">
+        <h2>Select Examination Session</h2>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:8px;">Choose the past paper you want to practice.</p>
+
+        <div class="session-grid" id="session-grid">
+          <!-- filled by JS -->
+        </div>
+
+        <div class="slider-wrap" id="slider-section" style="display:none;">
+          <div class="slider-label">
+            <span>Number of questions</span>
+            <strong id="slider-value">20</strong>
+          </div>
+          <input type="range" id="q-slider" min="5" max="50" value="20" step="1">
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);margin-top:4px;">
+            <span>5</span>
+            <span id="slider-max">50</span>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn" id="start-btn" disabled onclick="startQuiz()">Start Quiz</button>
+        </div>
+      </div>
+
+      <div class="card" style="padding:16px 18px;">
+        <h2 style="font-size:1rem;">Tips</h2>
+        <p style="margin:0;font-size:0.88rem;color:var(--muted);">
+          • Select a session → adjust the slider → Start<br>
+          • You get instant feedback after every answer<br>
+          • Full review is available at the end
+        </p>
+      </div>
+    </div>
+
+    <!-- ============ QUIZ SCREEN ============ -->
+    <div id="quiz-screen" class="screen">
+      <div class="progress-wrap">
+        <div class="progress-info">
+          <span id="q-counter">Question 1 of 20</span>
+          <span id="score-live">Score: 0</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <div class="q-number" id="q-num">Q1</div>
+        <div class="question-text" id="question-text"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-secondary" id="prev-btn" onclick="prevQuestion()" style="display:none;">Previous</button>
+        <button class="btn" id="next-btn" onclick="nextQuestion()" disabled>Next</button>
+      </div>
+    </div>
+
+    <!-- ============ RESULT SCREEN ============ -->
+    <div id="result-screen" class="screen">
+      <div class="card" style="text-align:center;">
+        <div class="score-circle" id="score-circle" style="--pct:0">
+          <div class="score-inner">
+            <div class="big" id="final-score">0%</div>
+            <div class="small" id="score-fraction">0 / 0</div>
+          </div>
+        </div>
+        <div class="result-msg" id="result-msg">Well done!</div>
+        <div class="result-sub" id="result-sub">You answered X correctly.</div>
+        <div style="font-size:0.85rem;color:var(--muted);margin-bottom:16px;" id="session-label"></div>
+        
+        <div class="btn-group">
+          <button class="btn" onclick="restartSame()">Retake Same</button>
+          <button class="btn btn-secondary" onclick="showReview()">Review Answers</button>
+          <button class="btn btn-secondary" onclick="goHome()">Change Session</button>
+        </div>
+      </div>
+
+      <div id="review-section" style="display:none;">
+        <div class="card">
+          <h2>Detailed Review</h2>
+          <div id="review-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>BUK SGES • Practice by Session • Good luck with our exams <br /> by <a href="https://apdoolhamza.github.io/">apdoolhamza</a> </footer>
+
+<script>
+/* ============================================================
+   QUESTIONS GROUPED BY EXAMINATION SESSION
+   ============================================================ */
+
+const sessions = {
+  "2020_1": {
+    title: "2020/2021 First Semester",
+    code: "EEP 3201",
+    questions: [
+      { q: "Alhaji Tausayi, touched by the difficulty of the Kano lockdown, launched a very cheap home delivery food business to households at break-even to sustain the venture. This act of kindness can be seen as:", options: ["Social Entrepreneurship", "Philanthropic venture", "Economic entrepreneurship", "Business social responsibility"], answer: 0 },
+      { q: "……… is defined as the transformation in patterns of organizational activity.", options: ["Innovation", "Creativity", "Change", "Divestment"], answer: 2 },
+      { q: "Which of the following is NOT among the factors that influence the technological environment of a business?", options: ["Source of finance", "Technological Development", "Technology infrastructure", "Source of Technology"], answer: 0 },
+      { q: "A style of business leadership that involves identifying opportunities from a hi-tech business perspective, otherwise known as:", options: ["Technopreneurship", "Technology incubation", "ICT-preneurship", "High impact-preneurship"], answer: 0 },
+      { q: "The ten commandments of Family business includes all of the following EXCEPT:", options: ["Induction and grooming", "Ownership Structure", "Preserving wealth", "Conflict resurfacing mechanism"], answer: 3 },
+      { q: "When customers use a bank mobile app instead of filling out a deposit slip at the banking hall, they are reaping the advantages of:", options: ["Innovation in process", "Innovation in product", "Innovation in management", "Innovation in costs and productivity"], answer: 0 },
+      { q: "……… is a factor that does NOT affect innovation.", options: ["Personality", "Culture", "Leadership style", "Market"], answer: 0 },
+      { q: "Changes in economic conditions create a vacuum for innovation in products and services. Legal changes, however, stagnate innovation.", options: ["True", "False", "Ambiguous", "Undecided"], answer: 1 },
+      { q: "An entrepreneur tends to resist change because of ……", options: ["Potential Cost disparities", "Group acceptance", "Communication", "Values and norms"], answer: 0 },
+      { q: "In an organization, ……… aids in creating acceptance for new methods and processes.", options: ["Inclusion of all stakeholders", "Identification of key areas of change", "Creation of hierarchy", "Adapting ideas from different environments"], answer: 0 },
+      { q: "A family and a business have two conflicting ideologies. Thus it is better to:", options: ["Not combine the two at the same time", "Put family needs first", "Strike a balance", "Put business needs first to ensure its survival"], answer: 2 },
+      { q: "In a typical African setting, all the following affect the standing of family businesses EXCEPT:", options: ["Polygamy", "Succession planning", "Family planning", "Business expertise"], answer: 3 },
+      { q: "In Arab nations, Thursdays and Fridays are deemed 'no work' days, just as Sunday is for Christians. When a family business operates in these settings:", options: ["Available workdays for that business are limited", "Productivity is hampered", "Competition would thrive", "Low survival rate would follow"], answer: 0 },
+      { q: "Culture influences the activities of ……", options: ["Family businesses", "Multinational corporations", "Local businesses", "All the above"], answer: 3 },
+      { q: "……… is one of the pitfalls of a family business.", options: ["Financial sacrifices made by family members", "Preserving the culture of the pioneer", "Higher levels of concern for its community", "Emphasis on family values"], answer: 1 },
+      { q: "The fact that we rarely have women-mechanics and truck drivers shows that:", options: ["Gender plays a role in assigning occupations", "Certain occupations are more suitable for men", "Biologically women are frail for such activities", "Men and women are occupationally unequal"], answer: 0 },
+      { q: "While men are likely to go into business for ………, women mostly go into business for ……", options: ["Passion, profit", "Expertise, profit", "Profit, passion", "Leisure, passion"], answer: 2 },
+      { q: "Social organizations like AHIP, WOFAN to mention a few are vital to societies. However, these organizations can only operate as non-profits.", options: ["True", "False", "Ambiguous"], answer: 1 },
+      { q: "The generic name for entrepreneurs that come up with intervention programmes to address issues of concern in their societies is ……", options: ["Social entrepreneurs", "Entrepreneurs", "Technopreneurs", "Creative entrepreneurs"], answer: 0 },
+      { q: "……… is an ideology ingrained in African culture which has aided the development of social entrepreneurship.", options: ["Individualism", "Socialism", "Communalism", "Capitalism"], answer: 2 },
+      { q: "The three dimensions of entrepreneurship are said to exclude all the following EXCEPT:", options: ["Opportunity", "Behaviours", "Procurement", "Result"], answer: 1 },
+      { q: "According to the personality approach, certain people possess a distinctive constellation of traits which does predispose them to entrepreneurial activities.", options: ["True", "False", "Ambiguous"], answer: 0 },
+      { q: "……… considers entrepreneurship in terms of the entrepreneur's interaction with his/her environment.", options: ["Mr. business", "Marketing perspective", "Functional perspective", "Intelligence perspective"], answer: 2 },
+      { q: "Which of the following did NOT form part of PESTEL?", options: ["Political", "Economic", "Scientific", "Environmental"], answer: 2 },
+      { q: "According to ……… approach, some individuals have a high inclination to create a venture than others.", options: ["Personality", "Background", "Culture", "Family"], answer: 0 },
+      { q: "The actual process of Business Development involves the following EXCEPT:", options: ["Validate your perfect market", "Create a financial success strategy", "Clarity, Motivation & Purpose", "Desire to be a role model in the society"], answer: 3 },
+      { q: "SWOT analysis is a method of identifying ……", options: ["Strengths, weakness, opportunity and trade", "Strengths, Weakness, Opportunities & Threats", "Traits, opportunities, weakness & strengths", "Service, welfare, opportunity & threats"], answer: 1 },
+      { q: "The ability to make or otherwise bring into existence something new, is referred to as ……", options: ["Innovation", "Intelligence", "Creativity", "Smartness"], answer: 2 },
+      { q: "All the following are contributions of creativity EXCEPT:", options: ["Redirection", "Replication", "Redefinition", "None of the above"], answer: 3 },
+      { q: "In Nigeria there are three (3) ways of protecting inventions or creativity; they are ……", options: ["Patent, Copyright & EFCC", "Trademark, Copyright & Patents", "Copyright, Royalties & Corporate affairs", "Copyright, Courts, Police & Copyright"], answer: 1 },
+      { q: "Are innovation and creativity the same?", options: ["Yes", "No", "Ambiguous", "Undecided"], answer: 1 },
+      { q: "The success of technological entrepreneurship is through ……", options: ["Profit motivation", "Brainstorming", "Innovation and Commercialisation", "All of the above"], answer: 2 },
+      { q: "Intellectual property differs from other forms of property because it is ……", options: ["Tangible", "A legal product", "Intangible", "EEP topic"], answer: 2 },
+      { q: "All the following inventions are entitled to copyright protection in Nigeria EXCEPT ……", options: ["Literary works", "Artistic works", "Cinematographs", "Intellectual property"], answer: 3 },
+      { q: "All of the options below are three basic roles of entrepreneurs EXCEPT:", options: ["The Innovator", "The negotiator", "The promoter", "The catalyst"], answer: 1 },
+      { q: "Isiyaka Rabiu and Sons owns IRS Airlines and now decided to go into rice milling due to the rice importation ban. What best describes their decision to venture into new areas?", options: ["Family influence start-up", "Family corporate venturing", "Family corporate renewal", "A and C"], answer: 1 },
+      { q: "In the acronym PESTEL, the second E stands for ……", options: ["Ecological factor", "Economic factor", "Environmental factor", "Entrepreneurial mindset"], answer: 0 },
+      { q: "The aim of EEP is to change students' mindset from seeing a problem as it is, to seeing it as ……", options: ["An opportunity", "A job", "A success", "A way out"], answer: 0 },
+      { q: "Social entrepreneurship typically involves applying business solutions to social problems. This statement is ……", options: ["True", "False", "Ambiguous", "Incomplete"], answer: 0 },
+      { q: "The dynamic learning perspective, unlike other theories of entrepreneurship, focuses attention on ……", options: ["Pre-start-up phase", "Post-start-up phase", "Mentorship", "None of the above"], answer: 1 },
+      { q: "One way to capitalise on cultural differences according to the teaching of entrepreneurship is to use it for ……", options: ["Viable trade", "Viable tourism business", "Viable social entrepreneurship", "Costume business"], answer: 1 },
+      { q: "Pressure on business to safeguard the Nigerian business environment against pollution and degradation by going green is mandated under one of the following environmental factors:", options: ["Ecological factor", "Geological factor", "Geographical factor", "Legal factor"], answer: 0 },
+      { q: "Devastated with the current state of unemployment in Nigeria, you decided to engage in a deliberate search for the demand and supply level of a particular product to see if there is a gap to be filled. In other words, you are engaged in ……", options: ["Opportunity evaluation", "Product/market research", "Idea scanning", "Macro economic analysis"], answer: 1 },
+      { q: "After a careful scan of Bayero University, you realized that establishing a filling station would be a viable business idea/opportunity. That opportunity is a ……", options: ["Recognized opportunity", "Discovered opportunity", "Created opportunity", "Enacted opportunity"], answer: 1 },
+      { q: "You are so passionate about entrepreneurship and you suddenly perceived a possibility for new profit potential through the creation of a new venture. You are thus engaged in ……", options: ["Opportunity recognition", "Venture creation", "Social analysis", "SWOT analysis"], answer: 0 },
+      { q: "A technology value-added entrepreneur is referred to as what?", options: ["Technocrat", "Technomaster", "Technopreneur", "Technologist"], answer: 2 },
+      { q: "What are the various forms of intellectual property rights from the following combinations?", options: ["Patent, Copyright and Trademark", "Patent, Duplicate right and Trade mark", "Patent, Copyright and Try mark", "Patience, Copyright and Trade Mark"], answer: 0 },
+      { q: "Inventions that demonstrate technological progress are best protected by ……", options: ["Patent", "Copyright", "Trademark", "Royalty"], answer: 0 },
+      { q: "What intellectual property right protects paintings, sculpture, prose, poetry, plays, musical compositions, dances, and photographs?", options: ["Patent", "Copyright", "Trademark", "Royalty"], answer: 1 },
+      { q: "The law that protects words, slogans, and symbols that serve to identify different brands of goods and services is ……", options: ["Patent", "Copyright", "Trademark", "Royalty"], answer: 2 },
+      { q: "……… differs from other forms of property because it is intangible.", options: ["Intellectual property", "Intentional property", "Intelligent property", "Intellet property"], answer: 0 },
+      { q: "All of the following are strategies to manage change resistance effectively, EXCEPT ……", options: ["Leadership", "Timing of change", "Begging", "Negotiation"], answer: 2 },
+      { q: "The type of innovation that seeks to replace the existing innovation is known as ……", options: ["Disturbing Innovation", "Replacement innovation", "Disruptive innovation", "Take over innovation"], answer: 2 },
+      { q: "The serious effect that the development of e-commerce in Nigeria has on traditional businesses can be seen from which of the following environmental factors:", options: ["e-Business Revolution", "Political factors", "Technological factors", "Developmental Factors"], answer: 2 },
+      { q: "The national income divided by the total population is known as ……", options: ["Per capita Income", "Per capital Income", "Par Capita Income", "Par Capital Income"], answer: 0 },
+      { q: "The inability of non-Muslims to properly establish and run liquor business in Kano is due to the presence of ……", options: ["Hisbah Board", "Socio-Cultural factors", "Language Barrier", "Karota"], answer: 0 },
+      { q: "The five stages of opportunities identification process are all the following, EXCEPT ……", options: ["Revaluation", "Evaluation", "Incubation", "Insight"], answer: 0 },
+      { q: "The current reduction in purchasing power as a result of persistent inflation brought about by Covid-19 can be studied under which external factor to the business?", options: ["Political factor", "Socio-Cultural factor", "Monetary policy", "Economic Factor"], answer: 3 },
+      { q: "The combination of internal and external factors that influence a company's operating situation is known as ……", options: ["Business Challenge", "Business Environment", "Business Killer", "Business Changes"], answer: 1 },
+      { q: "The art of generating multiple solutions to a particular problem is called ……", options: ["Critical thinking", "Creative thinking", "Hybrid thinking", "Miscellaneous thinking"], answer: 1 },
+      { q: "One of the following business resources is perishable and fixed in supply:", options: ["Fixed asset", "Raw materials", "Human resources", "Time"], answer: 3 },
+      { q: "Indomie, Coca Cola, and BUK logos and slogans are protected by ……", options: ["Patent", "Royalty", "Copyright", "Trademark"], answer: 3 },
+      { q: "Economic entrepreneurs measure success in terms of profit whereas social entrepreneurs measure their success in terms of practical contributions they make to societies.", options: ["True", "False", "Ambiguous", "Incomplete"], answer: 0 },
+      { q: "Late Alh. Haruna Dan-Ja left behind a business empire that later collapsed. One of the reasons for the collapse was the problem of succession. The strategy that could have remedied the situation is known as ……", options: ["Family business constitution", "Family business cash", "Family business neighbours", "A and C"], answer: 0 },
+      { q: "The Big Brother Nigeria show is a product of intellectual property. Specifically, it belongs to which of the IPRs?", options: ["Royalty", "Trademark", "Patent", "Copyright"], answer: 3 },
+      { q: "Ogechukwu, whose father used to travel to Onitsha by night buses for his business trips, now chose not to go by road because of armed robbery and road accidents. This decision is a result of ……", options: ["Risk profile similarities", "Business architecture", "Marketing profile difference", "Risk profile difference"], answer: 3 },
+      { q: "Which of the following traditional marketing elements do NOT apply to social entrepreneurship efforts?", options: ["Marketing mix", "Public relations", "Sales promo", "None of the above"], answer: 3 },
+      { q: "Mr. Wayo, who receives grants from Saudia Arabia, gives financial assistance to beggars so as to stop them from begging. Is Mr. Wayo a social entrepreneur?", options: ["Yes", "No", "I don't know", "Undecided"], answer: 0 },
+      { q: "Social entrepreneurs act as change agents by ……", options: ["Acting boldly and responsively to tackle need", "Adopting a mission to create social value", "Being accountable to the constituencies served", "All of the above"], answer: 3 },
+      { q: "Audu Jinkiri, who has been thinking about a business opportunity, suddenly started a face mask business as a result of the Coronavirus Pandemic. This type of opportunity is known as ……", options: ["Enacted type", "Created type", "Discovered type", "Bonus type"], answer: 2 }
+    ]
+  },
+
+  "2020_2": {
+    title: "2020/2021 Second Semester",
+    code: "EEP 3201",
+    questions: [
+      { q: "Key factors for success (KFS) of 'low labour costs' would suggest an environmental analysis of the following areas EXCEPT:", options: ["General wage level in the country", "Government's regulation towards labour", "Capacity building and training", "Labour militancy"], answer: 2 },
+      { q: "Intellectual property contrasts from other forms of property because it is ……", options: ["Tangible", "A legal product", "Intangible", "EEP topic"], answer: 2 },
+      { q: "There are always issues with family business, but there are ways to minimize these issues, one of which is to:", options: ["Risk free venture", "Family elders' council", "Nuclear family", "Eldest son a CEO"], answer: 1 },
+      { q: "The currency redesign policy by the CBN was argued to have affected business in many ways. This type of effect is considered as ……", options: ["External environmental effect", "Mixed environmental effect", "Interior environmental factors", "None of the above"], answer: 0 },
+      { q: "Monie point POS is making a lot of money in Nigeria today. This type of opportunity explored by the POS company is regarded as ……", options: ["Discovered", "Enacted", "Cocreated", "None of the above"], answer: 0 },
+      { q: "The main products of the third industrial revolution were ……", options: ["Space tech computers", "Electronics", "Robotics", "Electrical components and steel"], answer: 3 },
+      { q: "Yusra Yoghurt started their business and are selling in spite of the existence of Habib and Rufaida Yoghurts companies because:", options: ["There are people who need new product in the market", "Their prices are cheaper", "Their location is strategic", "All of the above"], answer: 3 },
+      { q: "Because of the dynamism of the Nigerian business ecosystem, the advancement of technology has made businesses key into the following EXCEPT:", options: ["Trader monie", "e-commerce", "Social media", "Electronics"], answer: 0 },
+      { q: "Covid19 has brought fortunes to many businesses and caused problems for others. Which of the following companies benefited most from the covid19 new normal?", options: ["Zoom", "Google", "Facebook", "WhatsApp"], answer: 0 },
+      { q: "Businesses in the Coke-village have been doing the same thing since time immemorial. If you find yourself in that position, what would you deploy to stand out?", options: ["Perpetuity", "Innovation and creativity", "Nostalgia", "None of the above"], answer: 1 },
+      { q: "The process of transferring managerial control from one generation to another in entrepreneurship is called ……", options: ["Success planning", "Transition", "Inheritance", "Succession Planning"], answer: 3 },
+      { q: "The following are factors that hinder people from taking action to become entrepreneurs EXCEPT:", options: ["Fear of failure because of our interpretation of failure", "Fear of looking stupid since desired actions run counter to accepted norms", "Fear of disappointing themselves and the people they love", "Internal locus of control"], answer: 3 },
+      { q: "New technology brought all the following entrepreneurship opportunities EXCEPT: (a)", options: ["Nanotechnology", "Economics", "Biotechnology", "Information communication technology"], answer: 1 },
+      { q: "The main technological significance of the fifth (5th) industrial revolution was ……", options: ["Earliest mechanization", "Steam power railway", "Electrical machinery", "Information communication technology"], answer: 3 },
+      { q: "Stages of succession planning begin with ……", options: ["Apprenticeship", "The death of the initiator", "Education and personal development", "Pre-business involvement"], answer: 3 },
+      { q: "The process of selling one's business to other investors at a predetermined period in order to recoup one's capital is known as ……", options: ["Exit strategy", "Offer for sale", "Survival strategy", "Loss minimisation"], answer: 0 },
+      { q: "One of these doesn't belong to the 10 commandments of family business:", options: ["Succession planning", "Retrenchment of non-family members", "Preserving wealth", "Ownership structure"], answer: 1 },
+      { q: "Technology infrastructure in a business environment includes all the following EXCEPT:", options: ["Capital", "Communication", "Transportation", "Energy technology"], answer: 0 },
+      { q: "The second industrial revolution is also called ……", options: ["Threshold age", "Post-cold war era", "Victorian prosperity", "Golden age"], answer: 2 },
+      { q: "All the following are the roles of a technopreneur EXCEPT:", options: ["Innovator", "Loyalty", "Catalyst", "Promoter"], answer: 1 },
+      { q: "Entrepreneurship is argued to be a personality variable, meaning that entrepreneurs possess the following characteristics EXCEPT:", options: ["High need for achievement", "External locus of control", "Risk taking propensity", "Self efficacy"], answer: 1 },
+      { q: "All the following are components of technology EXCEPT:", options: ["Experiment", "Machines", "Techniques", "Know-how"], answer: 0 },
+      { q: "Technological changes in a business environment can be achieved through all of the following EXCEPT:", options: ["Introduction of electronic transaction method", "Introduction of a new production method", "Utilization of a new source of raw material", "Introduction of a new product including quality improvement"], answer: 2 },
+      { q: "The main technological significance of the first (1st) industrial revolution was ……", options: ["Electrical machinery", "Steam power railway", "Earliest mechanization", "Music/entertainment bliss"], answer: 2 },
+      { q: "……… allows existing firms to re-engineer by providing an antidote to fossilisation.", options: ["Political entrepreneurship", "Corporate intrepreneurship", "Corporate entrepreneurship", "Social entrepreneurship"], answer: 2 },
+      { q: "According to personality approach, certain people possess a distinctive constellation of traits which did NOT predispose them to entrepreneurial activities.", options: ["TRUE", "FALSE", "AMBIGUOUS"], answer: 1 },
+      { q: "……… considers entrepreneurship in terms of the entrepreneur's interaction with his or her environment.", options: ["Prof. Sagagi", "Marketing perspective", "Functional perspective", "Intelligence perspective"], answer: 2 },
+      { q: "Which of the following did NOT form part of PESTEL?", options: ["Political", "Economic", "Scientific", "Environmental"], answer: 2 },
+      { q: "According to ……… approach, some individuals have a high inclination to create a venture than others.", options: ["Personality", "Background", "Culture", "Family"], answer: 0 },
+      { q: "The actual process of Business Development involves the following EXCEPT:", options: ["Validate your perfect market", "Create a financial success strategy", "Clarity, Motivation & Purpose", "Desire to be role model in the society"], answer: 3 },
+      { q: "SWOT analysis is a method of identifying ……", options: ["Strengths, weakness, opportunity and threat", "Threats, opportunities, weakness & strengths", "Traits, opportunities, weakness & strengths", "Service, welfare, opportunity & threats"], answer: 0 },
+      { q: "The ability to make or otherwise bring into existence something new, is referred to as ……", options: ["Innovation", "Intelligence", "Creativity", "Smartness"], answer: 2 },
+      { q: "All the following are contributions of creativity EXCEPT:", options: ["Redirection", "Replication", "Redefinition", "None of the above"], answer: 3 },
+      { q: "In Nigeria, there are three ways of protecting inventions or creativity, they are ……", options: ["Patent, Copyright & EFCC", "Trademark, Copyright & Patents", "Copyright, Royalties & Corporate affairs", "Courts, Police & Copyright"], answer: 1 },
+      { q: "All the following are NOT the negative attitudes that block creativity EXCEPT:", options: ["It can be done", "I am very creative", "Self confidence", "What will people think"], answer: 3 },
+      { q: "Are innovation and creativity the same?", options: ["YES", "No", "AMBIGUOUS"], answer: 1 },
+      { q: "The success of technological entrepreneurship is through ……", options: ["Profit motivation", "Brainstorming", "Innovation and Commercialisation", "All of the above"], answer: 2 },
+      { q: "The process by which a symbolic domain in the culture or way of doing things is altered to something alien is known as ……", options: ["Competition", "Creativity", "Consolation", "Cancellation"], answer: 1 },
+      { q: "Features of creative individuals involve all the following EXCEPT:", options: ["Playfulness and discipline", "Humble and proud", "Rebellious and independent", "Copying and gender based"], answer: 3 },
+      { q: "Creative thinking involves all the following EXCEPT:", options: ["Ability", "An attitude", "A process", "A region"], answer: 3 },
+      { q: "Some intellectual property rights expire after a specified period. Why?", options: ["To enable the creator/inventor to have fair reward for his work", "To encourage copy work", "To enable government generate revenue", "None of the above"], answer: 1 },
+      { q: "All the following inventions are entitled to copyright protection in Nigeria EXCEPT:", options: ["Literary works", "Artistic works", "Cinematographs", "Intellectual property"], answer: 3 },
+      { q: "All of the options below are three basic roles of entrepreneurs EXCEPT:", options: ["The Innovator", "The negotiator", "The promoter", "The catalyst"], answer: 1 },
+      { q: "Culture influences the activities of ……", options: ["Family businesses", "Multinational corporations", "Local businesses", "All the above"], answer: 3 },
+      { q: "……… is one of the pitfalls of a family business.", options: ["Financial sacrifices made by family members", "Preserving the culture of the pioneer", "Higher levels of concern for its community", "Emphasis on family values"], answer: 1 },
+      { q: "We study women entrepreneurship because ……", options: ["It exhibits features that are different from Men entrepreneurship", "Women are more successful", "Government policy requires it", "It is easier"], answer: 0 },
+      { q: "It is not surprising that most eateries are owned by women. All of the following are reasons for this pattern EXCEPT ……", options: ["Women engage in businesses that require lesser capital", "Women-owned businesses tend to be smaller", "Women businesses are predominantly found in consumer-oriented sectors", "Women are more likely to have patronage in this sector than in other sectors"], answer: 3 },
+      { q: "An African woman finds it more convenient to run an informal business because:", options: ["Of laws prohibiting the absorption of women in formal businesses", "The legal environment does not favour African women", "Literacy level for African women is on the rise", "She has more role models in the informal sector"], answer: 1 },
+      { q: "Social organizations like AHIP, WOFAN to mention a few are vital to societies. However, these organizations can only operate as non-profits.", options: ["TRUE", "FALSE", "AMBIGUOUS"], answer: 1 },
+      { q: "The generic name for entrepreneurs that come up with intervention programmes to address issues of concern in their societies is ……", options: ["Social entrepreneurs", "Entrepreneurs", "Technopreneurs", "Creative entrepreneurs"], answer: 0 },
+      { q: "……… is an ideology ingrained in African culture which has aided the development of social entrepreneurship.", options: ["Individualism", "Socialism", "Communalism", "Capitalism"], answer: 2 },
+      { q: "……… is a factor that motivates groups and individuals to bring about social change.", options: ["Societal recognition", "Creation of value", "Innovation", "Wealth maximization"], answer: 1 },
+      { q: "The invention of a computer is an example of ……", options: ["Technological innovation", "Breakthrough innovation", "Extra-ordinary innovation", "A and B"], answer: 3 },
+      { q: "……… are factors that affect innovation EXCEPT:", options: ["Personality", "Culture", "Leadership style", "Market"], answer: 0 },
+      { q: "Changes in economic conditions create a vacuum for innovation in products and services. Legal changes, however, stagnate innovation.", options: ["TRUE", "FALSE", "AMBIGIOUS"], answer: 1 },
+      { q: "An entrepreneur tends to resist change because of ……", options: ["Potential Cost disparities", "Group acceptance", "Communication", "Values and norms"], answer: 0 },
+      { q: "Assuming you just identified an opportunity with problem solving potential, what's next?", options: ["Idea generation", "Environmental scanning", "Information gathering and analysis", "Financial costing"], answer: 1 },
+      { q: "Dala Foods, for example, before now was going down in the market; suddenly one of the family members re-engineered the company by producing teabags, Kunun tsamiya etc. That act is referred to as ……", options: ["Family Private cash", "Family influenced start up", "Family corporate renewal", "None of the above"], answer: 2 },
+      { q: "Entrepreneurs do not need to assess the environment and design strategies that will allow them to thrive successfully.", options: ["True", "False", "Ambiguous", "No answer"], answer: 1 }
+    ]
+  },
+
+  "2022_1": {
+    title: "2022/2023 First Semester",
+    code: "EEP 3201",
+    questions: [
+      { q: "The concept of entrepreneurship can be defined in ……", options: ["Four dimensions", "Five dimensions", "Three dimensions", "Two dimensions"], answer: 2 },
+      { q: "L & Z-Yoghurt, said to be owned by two women married to the same husband, decided to venture into fura da nono business. Their action amounts to what type of opportunity exploration?", options: ["Created", "Market driven", "Discovered", "None of the above"], answer: 0 },
+      { q: "The recent demolition of shops by the Kano State government is said to be one of the external environments entrepreneurs should be mindful of:", options: ["Religious", "Social", "Government", "Political"], answer: 3 },
+      { q: "Removal of fuel subsidy by President Tinubu made prices of consumer goods go higher. Is it good for businesses?", options: ["Yes", "No", "Not sure"], answer: 1 },
+      { q: "Auren Zaurawa by the Kano state government in 2023 provided business opportunities to mostly ……", options: ["Furniture makers", "Hisbah board", "Beneficiaries", "Internet cafes"], answer: 0 },
+      { q: "One of the following is NOT among the sources of business opportunity in Nigeria:", options: ["Prior experience", "Facebook", "Personal interest", "Endowment fund"], answer: 3 },
+      { q: "One of the following is NOT among the hierarchical approach to developing a business idea:", options: ["Macro Economic analysis", "SWOT analysis", "Sectoral analysis", "Business plan"], answer: 3 },
+      { q: "The personality perspective of entrepreneurship corresponds with one of the following dimensions:", options: ["Behavioural", "Process", "Outcomes", "One man business"], answer: 0 },
+      { q: "Corporate venturing is a good example of ……", options: ["Corporation", "Corporate entrepreneurship", "Divestment", "Corporate renewal"], answer: 1 },
+      { q: "A market gap in marketing research is better known as ……", options: ["Target customers", "Goods and services", "Needs and wants", "Demand and supply"], answer: 3 },
+      { q: "Which of the following dimensions of entrepreneurship maintains that certain individuals are predisposed to engage in entrepreneurial activities by their personality traits?", options: ["Process", "Personality", "Outcome", "Behaviour"], answer: 1 },
+      { q: "The major difference between creativity and innovation is that the former is ……", options: ["Doing new things", "Commercial invention", "Thinking up new things", "a & b"], answer: 2 },
+      { q: "One of the following theories of entrepreneurship succeeded in conceptualising the concept of entrepreneurship in terms of the entrepreneur's interaction with his/her environment:", options: ["Functional Perspective", "Personality perspective", "Behavioural perspective", "None of the above"], answer: 0 },
+      { q: "The dynamic learning perspective, unlike other theories of entrepreneurship, focuses attention on ……", options: ["Pre-start up phase", "Post-start up phase", "Mentorship", "None of the above"], answer: 1 },
+      { q: "According to Stokes, Wilson and Mador, entrepreneurship does not always result in a new venture creation. This statement is ……", options: ["Ambiguous", "False", "True", "a & d"], answer: 2 },
+      { q: "Intrapreneurship is analogous to ……", options: ["Corporate entrepreneurship", "Entrepreneurship among many business", "Growth strategy", "All of the above"], answer: 0 },
+      { q: "The need for corporate entrepreneurship was necessitated by the following, EXCEPT:", options: ["Growth of competitors", "Intense competition", "Technological change", "Customer service strategy"], answer: 3 },
+      { q: "In the acronym PESTEL, the second E stands for ……", options: ["Ecological factor", "Economic factor", "Environmental factor", "Entrepreneurial mindset"], answer: 0 },
+      { q: "The aim of EEP is to change students' mindset from seeing a problem as it is to seeing it as ……", options: ["An opportunity", "A job", "A success", "A way out"], answer: 0 },
+      { q: "Among the business environment factors, the taxation policy comes under ……", options: ["Economic factor", "Political factor", "Legal factor", "All of the above"], answer: 1 },
+      { q: "Due to the effect of one of the following factors, the dog meat considered lawful for consumption and business in some part of Nigeria may be considered a taboo in some parts. Which one:", options: ["Gender", "Traditional beliefs", "Education", "Uncertainty avoidance"], answer: 1 },
+      { q: "One way to capitalise on cultural differences according to the teaching of entrepreneurship is to use it for ……", options: ["Viable trade", "Viable tourism business", "Viable social entrepreneurship", "Costume business"], answer: 1 },
+      { q: "An entrepreneur, unlike a proprietor, builds value in the market place primarily by leveraging the skills and assets of others, not necessarily through his individual or technical contribution. This statement is ……", options: ["Ambiguous", "True", "False", "Impossible"], answer: 1 },
+      { q: "In SWOT analysis, the threat is ……", options: ["Outside the organisation", "In the organisation", "Hidden", "None of the above"], answer: 0 },
+      { q: "Lack of good marketing skills is a ……… to the entrepreneur.", options: ["Strength", "Weakness", "Opportunity", "Threat"], answer: 1 },
+      { q: "In creativity and innovation, people normally create for the following reasons, EXCEPT:", options: ["Need to communicate new ideas", "Need for novel stimulation", "Need to solve problem", "Need to start up new venture"], answer: 3 },
+      { q: "A creative work that has economic value and is protected by law is known as ……", options: ["Intellectual property", "Patent", "Trade mark", "None of the above"], answer: 0 },
+      { q: "Which of the following is NOT an element in the diffusion of innovation process?", options: ["Social system", "Time", "Communications channel", "Financial constraints"], answer: 3 },
+      { q: "According to the Disruptive Innovation Model, innovation for not-innovation's sake is seldom financially successful.", options: ["True", "False", "Ambiguous"], answer: 0 },
+      { q: "EEP course is at which level of opportunity identification process?", options: ["Preparation", "Incubation", "Insight", "Evaluation"], answer: 0 },
+      { q: "In one of the following types of opportunity, the demand and supply in the market have to be both created:", options: ["Recognized type", "Discovered type", "Enactment type", "Stimulation"], answer: 2 },
+      { q: "Unwarranted socialising can be seen as ……… from a SWOT analysis perspective.", options: ["An opportunity", "A weakness", "A threat", "A strength"], answer: 1 },
+      { q: "One of the following is NOT a business resource:", options: ["Manpower", "Physical resource", "Time", "Trade fairs"], answer: 3 },
+      { q: "What part of the newly launched soft drink 'Pop Cola' could be protected by trademark?", options: ["The Logo", "The slogan", "Colour of the drink", "A and B above"], answer: 3 },
+      { q: "Which of the following is NOT part of the critical change areas?", options: ["Capital", "Raw materials", "Technology", "Completion"], answer: 3 },
+      { q: "Time wasters that should be avoided in managing time in business, excludes:", options: ["People", "Poor System", "Events", "Network"], answer: 3 },
+      { q: "One of the easier ways to control finances is ……", options: ["Budget", "Quality", "Economic training", "Good accounting system"], answer: 3 },
+      { q: "The recent increase in fuel pump price by government can affect one of the following in business:", options: ["Transportation", "Profit", "Delivery system", "Production"], answer: 0 },
+      { q: "In SWOT analysis, the acronym PSA stands for ……", options: ["Psychological System Analysis", "Performance Search Analysis", "Personal SWOT analysis", "Person self analysis"], answer: 2 },
+      { q: "Learning and sharing lessons that lead to higher competency as an element of innovation is referred to as ……", options: ["Contemplation", "Customer focus", "Challenge", "Completion"], answer: 0 },
+      { q: "Dala Foods company almost went down the drain when the owner died; fortunately a member of the family came of age and re-engineered the company, leading to production of Kunun tsamiya, Tea bags etc. That singular act coincides with which assumption of family business?", options: ["Family corporate venturing", "Family investment fund", "Family corporate renewal", "Family private cash"], answer: 2 },
+      { q: "For an intellectual property to qualify for a copyright in Nigeria, the work must be ……", options: ["Novel and genuine", "Fixed and Physical", "Fixed and Original", "None of the above"], answer: 2 },
+      { q: "Transfer of copyright may take any of these ……", options: ["Lease and hire", "Franchise and licensing", "Assignment and licensing", "Assignment and franchise"], answer: 2 },
+      { q: "In Nigeria, patent right covers one of the following:", options: ["Choreographs", "Chemicals", "Logo", "Business slogan"], answer: 1 },
+      { q: "Pressure on business to safeguard the Nigerian business environment against pollution and degradation by going green is mandated under one of the following environmental factors:", options: ["Ecological factor", "Geological factor", "Geographical factor", "Legal factor"], answer: 0 },
+      { q: "The sources of innovation include among others ……", options: ["Unexpected occurrences", "Incongruities of various kinds", "A & B above", "None of the above"], answer: 2 },
+      { q: "Late Alh. Audu Lukat left behind a business empire that later collapsed. One of the reasons for the collapse was the problem of succession. Among the following, there is a strategy that could have remedied the situation:", options: ["Family business constitution", "Family business cash", "Family business neighbours", "A and C"], answer: 0 },
+      { q: "Which of the following is NOT a source of innovation?", options: ["Demographic changes", "Changes in perceptions", "New knowledge", "Diffusion of innovation"], answer: 3 },
+      { q: "The act of implementing a new idea as an element of innovation is referred to as ……", options: ["Challenge", "Customer focus", "Contemplation", "Completion"], answer: 3 },
+      { q: "A ……… innovation is an extremely unique innovation which in most cases determines the basis for further innovation in that area or field.", options: ["Product innovation", "Process innovation", "Breakthrough", "Ordinary innovation"], answer: 2 },
+      { q: "Yahuza Suya's attitude of seeking business opportunities beyond security falls under which dimension of entrepreneurship?", options: ["Technology Entrepreneurship", "Inheritance dimension", "Behavioural dimension", "Family business dimension"], answer: 2 },
+      { q: "All the following are the various perspectives of entrepreneurship as propounded by economists EXCEPT:", options: ["Functional", "Behavioural", "Entrepreneurial", "Personality"], answer: 2 },
+      { q: "The Big Brother Nigeria 2023 show is a product of intellectual property. Specifically, it belongs to which of the IPRs?", options: ["Royalty", "Trademark", "Patent", "Copyright"], answer: 3 },
+      { q: "A lot of external forces help prevent people's creativity; these forces are put together and called as ……", options: ["Negative attitudes that block creativity", "Positive Attitude to encourage creativity", "Negative attitude that encourage creativity", "None of the above"], answer: 0 }
+    ]
+  },
+
+  "2024_1": {
+    title: "2024/2025 First Semester (ENT 211)",
+    code: "ENT 211",
+    questions: [
+      { q: "A feasibility study primarily helps an entrepreneur to:", options: ["Write a business plan", "Secure funding immediately", "Identify challenges and opportunities before committing resources", "Expand into international markets"], answer: 2 },
+      { q: "Which of the following is NOT a component of a feasibility study?", options: ["Market analysis", "Technical analysis", "Financial viability", "Marketing campaign execution"], answer: 3 },
+      { q: "Which section of a business plan is usually written last but placed first?", options: ["Executive Summary", "Financial Projections", "Market Strategy", "Business Description"], answer: 0 },
+      { q: "A well-structured business plan is important mainly because it ……", options: ["Eliminates all risks", "Provides clarity, attracts investors, and aligns the team", "Guarantees profitability", "Removes competition"], answer: 1 },
+      { q: "Financial projections in a business plan usually include all EXCEPT:", options: ["Cash flow statements", "Balance sheets", "Income statements", "Employee satisfaction reports"], answer: 3 },
+      { q: "In a sole proprietorship, liability is ……", options: ["Shared", "Limited", "Unlimited", "Corporate"], answer: 2 },
+      { q: "Which form of ownership allows raising capital from the public but faces high regulatory burden?", options: ["Cooperative society", "Private Limited Company (Ltd)", "Partnership", "Public Limited Company (Plc)"], answer: 3 },
+      { q: "A key advantage of a cooperative society is that it is:", options: ["Owned by government", "Member-owned and democratically controlled", "Easier to dissolve", "Limited to small businesses only"], answer: 1 },
+      { q: "The Corporate Affairs Commission (CAC) is responsible for:", options: ["Tax registration and compliance", "Business name reservation and incorporation", "Enforcing product quality standards", "Certifying food and drugs"], answer: 1 },
+      { q: "Which Nigerian agency certifies food, drugs, cosmetics, and medical devices?", options: ["SON", "FIRS", "NAFDAC", "CAC"], answer: 2 },
+      { q: "Obtaining a Tax Identification Number (TIN) is handled by:", options: ["SON", "NAFDAC", "CAC", "FIRS"], answer: 3 },
+      { q: "In a general partnership, liability is:", options: ["Limited for all partners", "Joint and unlimited", "Non existent", "Shared but limited"], answer: 1 },
+      { q: "Strategic alliances between businesses are usually formed to achieve all EXCEPT:", options: ["Risk-sharing", "Market expansion", "Access to new technologies", "Complete elimination of government regulations"], answer: 3 },
+      { q: "Networking provides entrepreneurs with all the following benefits EXCEPT:", options: ["Access to information", "Mentorship", "Guaranteed profits", "Professional connections"], answer: 2 },
+      { q: "In SWOT analysis, threats are best described as:", options: ["Internal weaknesses", "External challenges that may hinder performance", "Strengths within the organization", "Opportunities in the market"], answer: 1 },
+      { q: "Which of the following best describes Adaptability and Resilience as an entrepreneurial competency?", options: ["Ability to interpret analytics and data", "Ability to navigate market shifts and overcome setbacks", "Ability to protect inventions and designs", "Ability to leverage partnerships"], answer: 1 },
+      { q: "In Nigeria, which body is responsible for registering patents?", options: ["Nigerian Communications Commission (NCC)", "Corporate Affairs Commission (CAC)", "Trademarks, Patents and Designs Registry (Federal Ministry of Industry, Trade & Investment)", "National Office for Technology Acquisition and Promotion (NOTAP)"], answer: 2 },
+      { q: "Which of the following is an example of a trademark?", options: ["Chemical formula for a new drug", "A unique business logo", "Shape of a car's bumper", "Source code of an app"], answer: 1 },
+      { q: "One of the primary benefits of Intellectual Property Rights (IPR) is to ……", options: ["Eliminate the need for innovation", "Guarantee permanent protection without renewal", "Enable creators to monetize innovations", "Reduce competition in the market"], answer: 2 },
+      { q: "Which of the following is a common ethical issue in entrepreneurship?", options: ["Fair labour practices", "Environmental negligence", "Transparent accounting", "Data security compliance"], answer: 1 },
+      { q: "Kuda Bank in Nigeria is an example of:", options: ["A traditional commercial bank", "A digital-only bank", "A blockchain-based payment platform", "An industrial cluster"], answer: 1 },
+      { q: "Which technology provides secure transactions and supply chain transparency?", options: ["Artificial Intelligence", "Blockchain", "Cloud Computing", "Internet of Things"], answer: 1 },
+      { q: "The Nnewi Auto Parts Cluster is known for:", options: ["Leather processing", "Local vehicle assembly and spare parts", "Textile manufacturing", "Oil refining"], answer: 1 },
+      { q: "Which of the following is NOT a function of Technology Incubation Centres?", options: ["Providing mentorship", "Offering shared office space", "Supporting with legal and accounting advice", "Granting permanent patents"], answer: 3 },
+      { q: "Which of the following tools can be classified as a CRM system?", options: ["Asana", "HubSpot", "WhatsApp Business", "Jumia"], answer: 1 },
+      { q: "Nigeria is often referred to as the 'Giant of Africa' because of its ……", options: ["Oil and gas reserves", "Large population and economic potential", "Agricultural output", "Number of entrepreneurs"], answer: 1 },
+      { q: "Which policy specifically aims to create a favorable business climate for MSMEs in Nigeria?", options: ["National Youth Investment Fund", "National MSME Policy", "BOI Loan Scheme", "Vision 2020 Agenda"], answer: 1 },
+      { q: "A major challenge faced by Nigerian entrepreneurs in infrastructure is:", options: ["Excessive internet access", "Erratic power supply", "Shortage of workers", "Too much foreign investment"], answer: 1 },
+      { q: "Which Nigerian entrepreneur is associated with iROKOtv?", options: ["Tony Elumelu", "Jason Njoku", "Linda Ikeji", "Ibukun Awosika"], answer: 1 },
+      { q: "The informal sector in Nigeria is important because:", options: ["It reduces urban migration", "It incubates entrepreneurial spirit and small-scale innovation", "It eliminates corruption", "It depends on foreign loans"], answer: 1 },
+      { q: "Which Nigerian entrepreneur is known for women empowerment and furniture business?", options: ["Tara Fela-Durotoye", "Ibukun Awosika", "Linda Ikeji", "Folorunsho Alakija"], answer: 1 },
+      { q: "The Tony Elumelu Foundation is best known for promoting:", options: ["Agriculture", "Africapitalism and youth entrepreneurship", "Digital banking", "Media and entertainment"], answer: 1 },
+      { q: "Which of the following is a technological factor in Nigeria's PESTEL analysis?", options: ["Religion", "Blockchain", "Customs", "Inflation"], answer: 1 },
+      { q: "The C2B model of e-commerce involves:", options: ["Companies selling to consumers", "Consumers selling to businesses", "Businesses selling to businesses", "Consumers selling to consumers"], answer: 1 },
+      { q: "Which organization provides long-term financing and credit facilities for SMEs in Nigeria?", options: ["SMEDAN", "BOI", "NDE", "ITF"], answer: 1 },
+      { q: "SMEDAN focuses on capacity building, business registration, and policy advocacy.", options: ["True", "False", "Ambiguous"], answer: 0 },
+      { q: "The NYIF (National Youth Investment Fund) is a private sector initiative.", options: ["True", "False", "Ambiguous"], answer: 1 },
+      { q: "Linda Ikeji pioneered digital blogging in Nigeria, transforming it into a lucrative business.", options: ["True", "False", "Ambiguous"], answer: 0 },
+      { q: "……… is a Nigerian fintech company that provides secure digital payments and has boosted financial inclusion.", options: ["Paystack", "Bello Kano", "Jumia Pay", "O-Kash"], answer: 0 },
+      { q: "One of the ecological challenges affecting entrepreneurship in Nigeria is ……", options: ["Pollution", "Aviation", "Rainfall", "Railway"], answer: 0 },
+      { q: "The word 'entrepreneur' is derived from the French word entreprendre which means ……", options: ["To lead", "To undertake", "To manage", "To invest"], answer: 1 },
+      { q: "Jean-Baptiste Say defined entrepreneurship as ……", options: ["The act of managing resources efficiently", "A process of creating new markets only", "Doing new things within a new philosophy of value and utility", "Running a small business for profit"], answer: 2 },
+      { q: "An entrepreneur differs from a small business owner mainly because:", options: ["Entrepreneurs focus only on profit-making", "Entrepreneurs act on unique opportunities and innovations", "Small business owners take more risks", "Entrepreneurs do not require creativity"], answer: 1 },
+      { q: "Intrapreneurship refers to:", options: ["Entrepreneurs running family businesses", "Corporate leaders investing in startups", "Salaried individuals voluntarily innovating beyond job obligations", "Government-sponsored entrepreneurship"], answer: 2 },
+      { q: "Corporate entrepreneurship involves ……", options: ["Sole proprietorship ventures", "Innovation and value creation within corporations", "Family businesses expanding internationally", "NGOs providing grants for business"], answer: 1 },
+      { q: "The entrepreneurial journey is best described as ……", options: ["A quick path to wealth creation", "A uniform experience shared by all entrepreneurs", "A unique process of self-discovery, risks, and accomplishments", "A fixed path of following existing business models"], answer: 2 },
+      { q: "The key difference between entrepreneurs and others is ……", options: ["Access to finance", "Higher intelligence", "Taking the first step to act on opportunities", "Government support"], answer: 2 },
+      { q: "Creativity in entrepreneurship is associated with ……", options: ["Avoiding risks", "Developing something original and useful", "Copying existing business ideas", "Formal education only"], answer: 1 },
+      { q: "Critical thinking is defined as ……", options: ["Blindly following traditional knowledge", "Ability to clearly and logically consider information", "Generating unlimited new ideas", "Applying emotions in problem-solving"], answer: 1 },
+      { q: "Creative thinking focuses on:", options: ["Generating novel and useful ideas", "Conserving traditional approaches", "Avoiding change", "Eliminating imagination"], answer: 0 },
+      { q: "Design thinking emphasizes ……", options: ["Efficiency and speed over user needs", "Human-centered empathy and iteration", "Financial planning and budgeting", "Organizational hierarchy"], answer: 1 },
+      { q: "The correct sequence of design thinking phases is ……", options: ["Ideate → Prototype → Define → Test → Empathize", "Prototype → Define → Ideate → Empathize → Test", "Empathize → Define → Ideate → Prototype → Test", "Test → Prototype → Ideate → Define → Empathize"], answer: 2 },
+      { q: "A creative mindset is characterized by ……", options: ["Fear of failure and resistance to change", "Fixed rules and traditions", "Embracing challenges and continuous learning", "Avoiding risk-taking"], answer: 2 },
+      { q: "Which of the following is NOT a SCAMPER technique?", options: ["Substitute", "Combine", "Multiply", "Reverse"], answer: 2 },
+      { q: "Mind mapping is a method for ……", options: ["Linear financial projections", "Visual organization of ideas around a central concept", "Collecting customer complaints only", "Avoiding brainstorming sessions"], answer: 1 },
+      { q: "An invention is best defined as ……", options: ["Any business idea", "A unique or novel device, method, or process", "An improvement of an existing product only", "Simple product packaging"], answer: 1 },
+      { q: "A C-type invention is ……", options: ["A new product that creates a new function", "A product that lowers cost without changing quality", "A product that significantly improves quality", "A technological breakthrough in medicine"], answer: 1 },
+      { q: "A P-type invention refers to ……", options: ["A product that improves existing production", "A totally new product satisfying previously unmet needs", "A product that reduces cost of production", "An imitation of existing inventions"], answer: 1 },
+      { q: "Innovation differs from invention because ……", options: ["Innovation is the application of creativity into usable products/services", "Invention is always cheaper than innovation", "Innovation does not require creativity", "Invention is less valuable in business"], answer: 0 },
+      { q: "Which of these is NOT a key source of innovation?", options: ["Customers & market needs", "Employee ideas", "Political campaigns", "Research & development"], answer: 2 },
+      { q: "Knowledge and innovation management requires ……", options: ["Limiting learning to minimize risks", "Effective IP strategies and continuous improvement", "Copying competitors' strategies", "Avoiding external collaboration"], answer: 1 },
+      { q: "Innovation is important for SMEs because ……", options: ["It reduces the need for competition", "It ensures sustainability and competitive advantage", "It guarantees government support", "It eliminates employee involvement"], answer: 1 },
+      { q: "SMEs gain competitive advantage through innovation by ……", options: ["Cutting salaries", "Differentiating their offerings from competitors", "Reducing marketing efforts", "Depending only on traditional products"], answer: 1 },
+      { q: "Improved efficiency through innovation helps SMEs by ……", options: ["Reducing costs and boosting profitability", "Increasing bureaucracy", "Expanding into unrelated industries", "Reducing customer engagement"], answer: 0 },
+      { q: "Customer responsiveness in innovation means ……", options: ["Ignoring customer feedback", "Quickly adapting to evolving customer needs and trends", "Designing products for government only", "Waiting for competitors' moves"], answer: 1 },
+      { q: "Which of the following is a major challenge of innovation in Nigeria?", options: ["Excess funding", "Inadequate infrastructure", "Too much intellectual property enforcement", "Overdependence on SMEs"], answer: 1 },
+      { q: "Brain drain affects innovation in Nigeria by ……", options: ["Attracting foreign investors", "Increasing skilled personnel", "Loss of skilled personnel to international opportunities", "Enhancing innovation locally"], answer: 2 },
+      { q: "Weak IP enforcement in Nigeria leads to ……", options: ["Stronger patent protection", "Difficulty in protecting innovative ideas", "Encouragement of creativity", "Increase in foreign technology transfer"], answer: 1 },
+      { q: "Cultural resistance hinders innovation because ……", options: ["It promotes adaptability", "It fosters creativity", "It creates reluctance to embrace change and risks", "It enhances customer responsiveness"], answer: 2 },
+      { q: "Limited access to modern facilities in Nigeria is an example of ……", options: ["Poor infrastructure challenge", "Political resistance", "Employee disengagement", "Customer unresponsiveness"], answer: 0 }
+    ]
+  },
+
+  "ent211_modules_1_6": {
+    title: "ENT211 Objective Questions (Modules 1–6)",
+    code: "ENT 211",
+    questions: [
+      { q: "Entrepreneurship is best defined as the process of:", options: ["Working only in government organizations", "Identifying opportunities and creating value through business", "Selling products without making profit", "Borrowing money from banks"], answer: 1 },
+      { q: "Which of the following is an example of a social enterprise?", options: ["A company established only to maximize shareholders' profit", "A business that solves community problems while generating income", "A business that depends only on donations", "A political organization"], answer: 1 },
+      { q: "Which of the following is NOT one of the steps in Design Thinking?", options: ["Prototype", "Test", "Evaluate", "Empathize"], answer: 2 },
+      { q: "Which government agency is responsible for registering businesses in Nigeria?", options: ["SON", "CAC", "NAFDAC", "FIRS"], answer: 1 },
+      { q: "Which type of entrepreneur introduces new ideas inside an existing company?", options: ["Innovator", "Social entrepreneur", "Intrapreneur", "Sole proprietor"], answer: 2 },
+      { q: "The \"T\" in SWOT analysis stands for:", options: ["Target", "Trend", "Threat", "Technology"], answer: 2 },
+      { q: "Which of the following protects an invention?", options: ["Copyright", "Trademark", "Patent", "Logo"], answer: 2 },
+      { q: "Which of the following is an example of B2C e-commerce?", options: ["A manufacturer selling to a wholesaler", "A business selling directly to customers online", "An individual selling to another individual", "A customer offering services to a company"], answer: 1 },
+      { q: "The first stage in the entrepreneurial journey is:", options: ["Business registration", "Self-discovery", "Expansion", "Profit making"], answer: 1 },
+      { q: "Which of the following is NOT a characteristic of a creative person?", options: ["Curious", "Flexible", "Resistant to change", "Imaginative"], answer: 2 },
+      { q: "Which type of business ownership is owned by one person?", options: ["Partnership", "Cooperative", "Sole Proprietorship", "Public Limited Company"], answer: 2 },
+      { q: "Which of the following is a benefit of networking?", options: ["Reducing customer satisfaction", "Creating unnecessary competition", "Access to business opportunities", "Increasing taxes"], answer: 2 },
+      { q: "Which of the following is a digital payment platform mentioned in your notes?", options: ["WhatsApp", "Flutterwave", "Netflix", "Zoom"], answer: 1 },
+      { q: "The main purpose of a feasibility study is to determine whether:", options: ["A business can succeed", "A business should close", "Employees are hardworking", "Customers are educated"], answer: 0 },
+      { q: "Which of the following is an example of Corporate Social Responsibility (CSR)?", options: ["Selling fake products", "Avoiding taxes", "Supporting community development", "Increasing product prices unfairly"], answer: 2 },
+      { q: "Which of the following is NOT a type of innovation?", options: ["Incremental", "Radical", "Breakthrough", "Structural"], answer: 3 },
+      { q: "Which of the following is an objective of social entrepreneurship?", options: ["Increasing pollution", "Poverty alleviation", "Creating monopolies", "Eliminating competition"], answer: 1 },
+      { q: "Which entrepreneur is widely known for blogging in Nigeria?", options: ["Tony Elumelu", "Aliko Dangote", "Linda Ikeji", "Jason Njoku"], answer: 2 },
+      { q: "Which business ownership structure allows shares to be sold to the public?", options: ["Sole Proprietorship", "Cooperative", "Public Limited Company", "Partnership"], answer: 2 },
+      { q: "Which of the following is an example of an emerging technology?", options: ["Chalkboard", "Artificial Intelligence", "Manual Typewriter", "Fax Machine"], answer: 1 },
+      { q: "Which stage of Design Thinking involves creating a sample of the solution?", options: ["Define", "Ideate", "Prototype", "Test"], answer: 2 },
+      { q: "Which of the following is NOT one of the elements of creativity?", options: ["Fluency", "Flexibility", "Originality", "Expansion"], answer: 3 },
+      { q: "Which of the following is a challenge facing entrepreneurs in Nigeria?", options: ["Unlimited funding", "Poor infrastructure", "No competition", "Free electricity"], answer: 1 },
+      { q: "The main goal of a traditional business enterprise is:", options: ["Social impact", "Environmental protection", "Profit maximization", "Charity work"], answer: 2 },
+      { q: "Which of the following best describes innovation?", options: ["Thinking of a new idea only", "Creating a completely new invention only", "Applying ideas to create value and solve problems", "Copying another person's business exactly"], answer: 2 },
+      { q: "Which of the following is one of the objectives of entrepreneurship?", options: ["Increasing unemployment", "Creating value through innovation", "Preventing business growth", "Reducing competition"], answer: 1 },
+      { q: "The \"E\" in PESTEL Analysis stands for:", options: ["Economy only", "Ecology (Environment)", "Employment", "Export"], answer: 1 },
+      { q: "Which of the following is a source of creativity?", options: ["Brainstorming", "Laziness", "Corruption", "Taxation"], answer: 0 },
+      { q: "Which of the following protects a company's logo?", options: ["Patent", "Trademark", "Copyright", "Industrial Design"], answer: 1 },
+      { q: "Which of the following is a characteristic of a social entrepreneur?", options: ["Mission-driven", "Self-centered", "Unethical", "Resistant to change"], answer: 0 },
+      { q: "Which type of e-commerce involves one consumer selling directly to another consumer?", options: ["B2B", "B2C", "C2C", "C2B"], answer: 2 },
+      { q: "Which government agency is responsible for ensuring products meet quality standards in Nigeria?", options: ["CAC", "FIRS", "SON", "NDE"], answer: 2 },
+      { q: "Which of the following is an example of Intellectual Property?", options: ["Business debt", "Creative work", "Salary", "Tax receipt"], answer: 1 },
+      { q: "A business plan mainly serves as:", options: ["A punishment for entrepreneurs", "A guide for operating a business", "A tax payment receipt", "A government policy"], answer: 1 },
+      { q: "Which of the following is an example of a virtual office tool?", options: ["Zoom", "Wheelbarrow", "Calculator", "Stapler"], answer: 0 },
+      { q: "Which of the following is an external source of finance for a social enterprise?", options: ["Product sales", "Subscription fees", "Grants", "Service charges"], answer: 2 },
+      { q: "Which of the following best describes brainstorming?", options: ["Rejecting every idea immediately", "Generating many ideas freely", "Solving only financial problems", "Avoiding teamwork"], answer: 1 },
+      { q: "The process of introducing a completely new product is known as:", options: ["Innovation", "Invention", "Marketing", "Networking"], answer: 1 },
+      { q: "Which of the following is an example of a FinTech company?", options: ["Paystack", "SON", "CAC", "NAFDAC"], answer: 0 },
+      { q: "Which of the following is an advantage of e-commerce?", options: ["Limited market reach", "High operating costs", "Twenty-four-hour operation", "No customer interaction"], answer: 2 },
+      { q: "Which of the following is considered a weakness in SWOT Analysis?", options: ["Loyal customers", "Good reputation", "Limited capital", "High demand"], answer: 2 },
+      { q: "The major purpose of networking is to:", options: ["Increase business isolation", "Build valuable business relationships", "Reduce communication", "Eliminate competition"], answer: 1 },
+      { q: "Which of the following is a benefit of social entrepreneurship?", options: ["Increasing poverty", "Improving community welfare", "Promoting corruption", "Reducing education"], answer: 1 },
+      { q: "Which type of entrepreneur develops completely new ideas?", options: ["Innovator", "Employee", "Customer", "Distributor"], answer: 0 },
+      { q: "Which of the following is a challenge of innovation in Nigeria?", options: ["Strong infrastructure", "Unlimited technology", "Brain drain", "Excess funding"], answer: 2 },
+      { q: "Which of the following belongs to cloud computing services?", options: ["Dropbox", "Hammer", "Notebook", "Television"], answer: 0 },
+      { q: "Which of the following is NOT a type of business ownership?", options: ["Partnership", "Sole Proprietorship", "Cooperative", "Brainstorming"], answer: 3 },
+      { q: "Which of the following is an example of industrial clusters in Nigeria?", options: ["Kano Leather Cluster", "Abuja Airport", "National Assembly", "Federal Ministry of Education"], answer: 0 },
+      { q: "Which of the following best explains financial sustainability in a social enterprise?", options: ["Depending only on donations forever", "Generating enough income to continue achieving its mission", "Avoiding all business activities", "Refusing to make any revenue"], answer: 1 },
+      { q: "Which of the following best describes an entrepreneur?", options: ["A person who only works for the government", "A person who identifies opportunities and starts a business", "A person who only borrows money from banks", "A person who avoids taking risks"], answer: 1 },
+      { q: "Which of the following best describes creativity?", options: ["Copying another person's business", "Thinking of new and useful ideas", "Registering a business", "Selling products online"], answer: 1 },
+      { q: "Which type of Intellectual Property protects books, music, and software?", options: ["Patent", "Trademark", "Copyright", "Industrial Design"], answer: 2 },
+      { q: "Which of the following is a benefit of conducting a feasibility study?", options: ["It increases business risk.", "It helps determine whether a business idea is viable.", "It guarantees business success.", "It eliminates competition."], answer: 1 },
+      { q: "Which of the following is a source of innovation according to Peter Drucker?", options: ["Unexpected events", "Climate change only", "Advertising", "Transportation"], answer: 0 },
+      { q: "Which of the following is an internal source of finance for a social enterprise?", options: ["Crowdfunding", "Grants", "Product sales", "Impact investment"], answer: 2 },
+      { q: "Which of the following is a characteristic of a successful entrepreneur?", options: ["Fear of change", "Persistence", "Laziness", "Indecisiveness"], answer: 1 },
+      { q: "Which of the following is responsible for collecting federal taxes in Nigeria?", options: ["CAC", "NAFDAC", "SON", "FIRS"], answer: 3 },
+      { q: "Which of the following is an advantage of a Sole Proprietorship?", options: ["Unlimited shareholders", "Easy decision-making", "Shares sold to the public", "Unlimited partners"], answer: 1 },
+      { q: "Which of the following is a challenge of operating a virtual office?", options: ["Reduced office rent", "Flexible working hours", "Cybersecurity risks", "Wider market reach"], answer: 2 },
+      { q: "Which of the following is an example of B2B e-commerce?", options: ["A customer selling used clothes to another customer", "A supermarket buying goods from a manufacturer", "A student buying a phone online", "A freelancer designing a logo for a company"], answer: 1 },
+      { q: "Which of the following comes immediately after the \"Define\" stage in Design Thinking?", options: ["Prototype", "Test", "Ideate", "Evaluate"], answer: 2 },
+      { q: "Which of the following is a benefit of Intellectual Property Rights?", options: ["Encourages piracy", "Protects innovations", "Prevents creativity", "Reduces competition"], answer: 1 },
+      { q: "Which of the following is an example of an opportunity in SWOT Analysis?", options: ["Poor management", "High demand for products", "Limited capital", "Poor customer service"], answer: 1 },
+      { q: "Which of the following is a major objective of business ethics?", options: ["Promoting corruption", "Building trust with customers", "Increasing fraud", "Avoiding responsibility"], answer: 1 },
+      { q: "Which of the following is one of the models of social enterprises?", options: ["Monopoly model", "Hybrid model", "Wholesale model", "Franchise model"], answer: 1 },
+      { q: "Which of the following is an example of Customer Relationship Management (CRM) software?", options: ["HubSpot", "Netflix", "YouTube", "Photoshop"], answer: 0 },
+      { q: "Which entrepreneur is associated with the Dangote Group?", options: ["Jason Njoku", "Tony Elumelu", "Aliko Dangote", "Linda Ikeji"], answer: 2 },
+      { q: "Which of the following best describes innovation?", options: ["Selling only imported products", "Applying ideas to create value", "Avoiding technology", "Closing existing businesses"], answer: 1 },
+      { q: "Which of the following is a function of NAFDAC?", options: ["Registering companies", "Regulating food and drugs", "Collecting taxes", "Building roads"], answer: 1 },
+      { q: "Which of the following is one benefit of industrial clusters?", options: ["Increased transportation costs", "Sharing of facilities and skills", "Reduced cooperation", "Business isolation"], answer: 1 },
+      { q: "Which of the following is an example of a political factor in PESTEL Analysis?", options: ["Inflation", "Government policies", "Population growth", "Internet access"], answer: 1 },
+      { q: "Which of the following is one of the objectives of social entrepreneurship?", options: ["Environmental protection", "Increasing unemployment", "Reducing innovation", "Eliminating technology"], answer: 0 },
+      { q: "Which of the following is considered an external threat to a business?", options: ["Skilled workers", "Strong competitors", "Good reputation", "Effective management"], answer: 1 },
+      { q: "Which of the following is an important part of a business plan?", options: ["Financial Projection", "National Anthem", "School Timetable", "Birth Certificate"], answer: 0 },
+      { q: "Which of the following best describes an intrapreneur?", options: ["A person who owns many businesses", "An employee who develops new ideas within an existing organization", "A government official responsible for business registration", "A customer who buys products online"], answer: 1 },
+      { q: "Which of the following is the main objective of a feasibility study?", options: ["To advertise a business", "To determine whether a business idea is workable", "To recruit employees", "To increase taxes"], answer: 1 },
+      { q: "Which of the following is an example of an economic factor in PESTEL Analysis?", options: ["Government policy", "Inflation", "Culture", "Climate"], answer: 1 },
+      { q: "Which of the following best describes a patent?", options: ["Protection for books and music", "Protection for inventions", "Protection for company logos", "Protection for product packaging only"], answer: 1 },
+      { q: "Which of the following is a benefit of networking?", options: ["Access to investors", "Increased business isolation", "Reduced customer satisfaction", "Elimination of competitors"], answer: 0 },
+      { q: "Which of the following is a challenge commonly faced by entrepreneurs in Nigeria?", options: ["Unlimited electricity supply", "Poor infrastructure", "Free access to capital", "No market competition"], answer: 1 },
+      { q: "Which of the following is a characteristic of an entrepreneur?", options: ["Fear of taking risks", "Creativity", "Laziness", "Dishonesty"], answer: 1 },
+      { q: "Which of the following is one of the steps in forming a social enterprise?", options: ["Ignore community problems", "Identify a social problem", "Avoid measuring impact", "Depend only on donations"], answer: 1 },
+      { q: "Which of the following protects the name or logo of a business?", options: ["Copyright", "Patent", "Trademark", "Industrial Design"], answer: 2 },
+      { q: "Which of the following is an example of a cloud computing service?", options: ["Dropbox", "Calculator", "Printer", "Television"], answer: 0 },
+      { q: "Which of the following best describes a business plan?", options: ["A written guide for starting and managing a business", "A government tax document", "A sales receipt", "A business licence"], answer: 0 },
+      { q: "Which of the following is an example of disruptive innovation?", options: ["Slight improvement in product packaging", "Introduction of online banking that changes traditional banking", "Increasing product prices", "Hiring more workers"], answer: 1 },
+      { q: "Which of the following is one of the major functions of SMEDAN?", options: ["Regulating food and drugs", "Registering political parties", "Supporting and developing small businesses", "Collecting customs duties"], answer: 2 },
+      { q: "Which of the following is an advantage of a Partnership?", options: ["Only one owner makes all decisions", "Shared capital and responsibilities", "Shares are sold to the public", "Unlimited government support"], answer: 1 },
+      { q: "Which of the following is an example of Corporate Social Responsibility (CSR)?", options: ["Dumping waste into rivers", "Supporting education through scholarships", "Selling expired products", "Avoiding payment of taxes"], answer: 1 },
+      { q: "Which of the following is one of the elements of creativity?", options: ["Originality", "Registration", "Negotiation", "Distribution"], answer: 0 },
+      { q: "Which of the following is an example of C2B e-commerce?", options: ["A supermarket buying from a manufacturer", "A company selling directly to customers", "A freelancer providing services to a company", "One customer selling goods to another customer"], answer: 2 },
+      { q: "Which of the following is the first stage in Design Thinking?", options: ["Prototype", "Test", "Empathize", "Ideate"], answer: 2 },
+      { q: "Which of the following is an example of a legal factor in PESTEL Analysis?", options: ["Population growth", "Labour laws", "Inflation", "Internet usage"], answer: 1 },
+      { q: "Which of the following is a benefit of e-commerce?", options: ["Limited business hours", "Wider customer reach", "Higher transportation costs", "Reduced internet usage"], answer: 1 },
+      { q: "Which of the following best describes innovation?", options: ["Thinking of a business idea only", "Applying creative ideas to produce value", "Registering a company", "Advertising products only"], answer: 1 },
+      { q: "Which of the following is a source of creativity?", options: ["Brainstorming", "Tax collection", "Inflation", "Importation"], answer: 0 },
+      { q: "Which of the following is one of the objectives of social entrepreneurship?", options: ["Maximizing pollution", "Community development", "Reducing education", "Increasing unemployment"], answer: 1 },
+      { q: "Which of the following is responsible for ensuring product quality standards in Nigeria?", options: ["SON", "CAC", "BOI", "FIRS"], answer: 0 },
+      { q: "Which of the following is one of the major sources of external finance for social enterprises?", options: ["Product sales", "Subscription fees", "Grants", "Daily business profit"], answer: 2 },
+      { q: "Which of the following correctly matches the concept with its meaning?", options: ["Creativity — Applying ideas to create value", "Innovation — Thinking of new ideas only", "Invention — Creating something completely new", "Entrepreneurship — Working only for the government"], answer: 2 }
+    ]
+  },
+
+  "2024_exam_type_c": {
+    title: "2024/2025 First Semester Examination – TYPE C",
+    code: "ENT 211",
+    questions: [
+      { q: "……… is a critical asset in entrepreneurship, which encompasses various skills, insights, and experiences that contribute to business success.", options: ["Knowledge", "Decision making", "Creativity", "Risk management"], answer: 0 },
+      { q: "All of the following are areas of knowledge for entrepreneurs except:", options: ["Market knowledge", "Financial knowledge", "Operational knowledge", "Paucity knowledge"], answer: 3 },
+      { q: "Each of the following are skills needed for entrepreneurs except:", options: ["Conflict skills", "Business Management skills", "Communication and listening skills", "Networking skills"], answer: 0 },
+      { q: "Education and training are regarded as a ………", options: ["way of developing entrepreneurial knowledge", "Source of capital", "Conflict mechanism", "Account receivable"], answer: 0 },
+      { q: "One of these is an importance of knowledge in entrepreneurship:", options: ["It brings negative outcomes on business.", "It does not give room for new learning.", "It facilitates innovation and creativity.", "It does not allow for new skill acquisition."], answer: 2 },
+      { q: "A form of skills that are essential for planning, organizing, directing and controlling resources is called ………", options: ["Financial acumen", "Business environment", "Market knowledge", "Skills knowledge"], answer: 0 },
+      { q: "Which one among these is not a means of developing entrepreneurial skills?", options: ["Mentorship", "Over-confidence", "Continuous learning", "Practical experience"], answer: 1 },
+      { q: "Understanding financial management, budgeting, and financial statement analysis for making informed decisions is known as ………", options: ["Financial analysis", "Financial literacy", "Financial projection", "Financial control"], answer: 1 },
+      { q: "One of these is regarded as an importance of technology in entrepreneurship:", options: ["Creating new opportunities", "Increase barrier to business entry", "Poor efficiency", "Poor decision making"], answer: 0 },
+      { q: "Each of the following is being considered under the classes of intellectual properties except:", options: ["Patent", "Trade secret", "Social capital", "Copyright"], answer: 2 },
+      { q: "What is used to distinguish one product from other in the area of name, symbol, slogan or combination of both is known as ………", options: ["Trade mark", "Trade credit", "Trade service", "Trade operation"], answer: 0 },
+      { q: "……… protect inventions and technological advancements, granting exclusive rights to the inventor for a specified period.", options: ["Patent", "Trade mark", "Trade secret", "Copyright"], answer: 0 },
+      { q: "Protect original works of authorship, such as literature, music, and art, and giving creators exclusive rights to reproduce and distribute their works is known as ………", options: ["Competitive advantage", "Competition", "Copyright", "Copy work"], answer: 2 },
+      { q: "Awareness of the legal requirements and regulations governing the industry by entrepreneurs is known as ………", options: ["Legal and Regulatory knowledge", "Legal and Regulatory malpractices", "Legal and Regulatory activities", "Legal and Regulatory advantages"], answer: 0 },
+      { q: "Some characteristics of successful Entrepreneurs include:", options: ["Calculated risk taker", "Lazy and sleepy", "Selfishness", "Indecisiveness"], answer: 0 },
+      { q: "The following are importance of self-employment except ………", options: ["Job creation", "Impact on society", "Impact on larger firms", "Unemployment"], answer: 3 },
+      { q: "All except one are some giant Entrepreneurs:", options: ["Jeff Bezos", "Director GSP", "Bill Gates", "Mike Adenuga"], answer: 1 },
+      { q: "The activities of any individual or organisation with the purpose of converting efforts to results is", options: ["Business plan", "Business research", "Business strategy", "Business process"], answer: 3 },
+      { q: "Business planning process entails all except ………", options: ["Research", "Strategization", "Drafting", "Copying"], answer: 3 },
+      { q: "Revisitation and proof reading is meant to check for:", options: ["Beauty of plan", "Ambiguity and inappropriateness", "Visiting staff of the organisation", "Business owner's name"], answer: 1 },
+      { q: "All except one form a typical structure of business plan:", options: ["Executive summary", "Business description", "Business tycoons", "Market Analysis"], answer: 2 },
+      { q: "A summary of the business idea, a sketch report of where the business fits in the market is termed:", options: ["Executive summary", "Exclusive summary", "Extraordinary summary", "Exotic summary"], answer: 0 },
+      { q: "The components of a business plan responsible for choosing the best promotional plan is the:", options: ["Operational plan", "Marketing plan", "Environmental analysis", "Management and organisation"], answer: 1 },
+      { q: "The financial plan involves the ………", options: ["Sources of finance", "Customers", "Creditors", "Debtors"], answer: 0 },
+      { q: "The management and organisation plan entails all except ………", options: ["Structure of the organization", "Staffing requirement", "Recruitment and selection process", "Beautification of the organisation"], answer: 3 },
+      { q: "Sole proprietorship is a business financed by ………", options: ["One person", "2-20 persons", "7-infinity persons", "2-50 persons"], answer: 0 },
+      { q: "The document governing the partnership business is ………", options: ["Sole trade book", "Partnership deed", "Ledger", "Book of record"], answer: 1 },
+      { q: "The process by which individuals pursue opportunities without regards to resources they control is known as ………", options: ["Entrepreneurship", "Trade", "Discovery", "Marketing"], answer: 0 },
+      { q: "The creation of new enterprises by individuals or corporations to exploit technological inventions is called ………", options: ["Social entrepreneurship", "Corporate entrepreneurship", "Technopreneurship", "Intrapreneurship"], answer: 2 },
+      { q: "An Entrepreneur is a person ………", options: ["Who locates and identifies business opportunities and takes advantage of them", "Who loves to sleep and dream of ideas", "Who wishes to be rich", "Who is already rich"], answer: 0 },
+      { q: "The following are common perceptions about Entrepreneurs except ………", options: ["Entrepreneurs are born and not made", "Entrepreneurs are gamblers", "Entrepreneurs are motivated primarily by money", "None of the above"], answer: 3 },
+      { q: "Some of the qualities of successful Entrepreneurs include but:", options: ["A moderate risk taker", "Creative", "Alert to opportunities", "Lazy and idle"], answer: 3 },
+      { q: "The following are some importance of Self Employment except ………", options: ["Become innovative", "Become arrogant", "Create jobs", "Have a great impact on the Society"], answer: 1 },
+      { q: "……… is concerned with the application of innovative and sustainable approaches to benefit the Society.", options: ["Technopreneurship", "Social entrepreneurship", "Corporate entrepreneurship", "Intrapreneurship"], answer: 1 },
+      { q: "Being proactive, innovative and taking calculated Risks are characteristics of", options: ["An employee", "An employer", "A marketer", "An entrepreneur"], answer: 3 },
+      { q: "The following are giant Entrepreneurs of the world except ………", options: ["Warren Buffett", "Steve Jobs", "Aliko Dangote", "None of the above"], answer: 3 },
+      { q: "Entrepreneurs are perceived wrongly to be ………", options: ["Gamblers and money mongers", "Visionary", "Optimistic", "Creative"], answer: 0 },
+      { q: "Which of the following is an advantage of debt financing?", options: ["Profit-sharing with investors", "No interest payment", "Ownership is not diluted", "No need for collateral"], answer: 2 },
+      { q: "What is a common disadvantage of debt financing?", options: ["Need to sell company shares", "Taxable interest payments", "Dilution of ownership", "Pressure on cash flow due to repayments"], answer: 3 },
+      { q: "Equity financing involves:", options: ["Borrowing money from banks", "Selling company shares to investors", "Using retained earnings only", "Receiving government grants"], answer: 1 },
+      { q: "One major advantage of equity financing is:", options: ["Interest payments are tax-deductible", "No profit sharing", "No repayment obligation", "No dilution of ownership"], answer: 2 },
+      { q: "Which of the following is not a source of equity financing?", options: ["Angel investors", "Private equity firms", "Microfinance banks", "Personal savings"], answer: 2 },
+      { q: "Venture capital typically targets businesses that are:", options: ["Highly stable with low risk", "Established with no need for growth", "Innovative and high-risk", "Only in the manufacturing sector"], answer: 2 },
+      { q: "A major disadvantage of venture capital is:", options: ["Access to limited capital", "Need for collateral", "Dilution of ownership", "Lack of strategic guidance"], answer: 2 },
+      { q: "Which of the following is a key feature of venture capital funding?", options: ["Requires regular interest payments", "Involves selling debt instruments", "Focuses on traditional businesses", "Includes multiple funding stages"], answer: 3 },
+      { q: "A business loan from a development finance institution (DFI) is an example of:", options: ["Equity financing", "Venture capital", "Debt financing", "Personal savings"], answer: 2 },
+      { q: "Which of the following best defines e-commerce?", options: ["Conducting business via television", "Selling products at physical retail outlets", "Buying and selling of goods and services over the internet", "Advertising products using newspapers"], answer: 2 },
+      { q: "B2B e-commerce refers to transactions between:", options: ["Consumers and businesses", "Two individuals", "Two businesses", "Government and businesses"], answer: 2 },
+      { q: "C2C e-commerce is best represented by:", options: ["Jumia", "Freelancer.com", "eBay", "Amazon"], answer: 2 },
+      { q: "Which of the following is not a principle of e-commerce?", options: ["Trust and security", "Complex user interfaces", "Digital presence", "Electronic payment systems"], answer: 1 },
+      { q: "An e-commerce site that uses HTTPS is focusing on:", options: ["SEO", "Trust and security", "Digital advertising", "Product diversification"], answer: 1 },
+      { q: "What does SEO stand for in digital marketing?", options: ["Software Engine Optimization", "Search Engine Optimization", "Service Efficiency Operation", "Social Engagement Options"], answer: 1 },
+      { q: "One key benefit of using digital wallets for payment is:", options: ["They require paper receipts", "They delay transaction time", "They offer convenience and security", "They are not accepted online"], answer: 2 },
+      { q: "Which of the following best exemplifies customer focus in e-commerce?", options: ["Long checkout processes", "Lack of personalized service", "Fast response to inquiries", "Complex return policies"], answer: 2 },
+      { q: "Entrepreneurship as a field of study has its origin from:", options: ["Economics", "Sociology", "Psychology", "All of the above"], answer: 3 },
+      { q: "The word entrepreneur has its origin from:", options: ["Latin", "Greek", "French", "Igbo"], answer: 2 },
+      { q: "At the beginning, the word was used to describe:", options: ["Managers", "Suppliers", "Foot Soldiers", "Consumers"], answer: 2 },
+      { q: "Creative destruction refers to:", options: ["Innovation", "creativity", "opportunity seeking", "Passion"], answer: 0 },
+      { q: "A person who is ready to bear risk is known as:", options: ["Merchant", "Manager", "Entrepreneur", "Retailer"], answer: 2 },
+      { q: "All of the following are characteristics of an entrepreneur with the exception of:", options: ["Passion", "Endurance", "Opportunity recognition", "Duping"], answer: 3 },
+      { q: "Solo entrepreneurs are entrepreneurs that:", options: ["Develop their own business ideas", "Reluctant to change", "Comfortable with their achievement", "Dissatisfied with their progress"], answer: 0 },
+      { q: "One of the following is not among the roles of an entrepreneur:", options: ["Revenue generation", "Agent of deception", "Job creation", "Meeting societal needs"], answer: 1 },
+      { q: "……… are entrepreneurs who are identified by their skills:", options: ["Craftsman", "Drone", "Fabian", "Solo"], answer: 0 },
+      { q: "Entrepreneurs who are reluctant to change are called:", options: ["Fabian", "Solo", "Drone", "Craftsman"], answer: 0 },
+      { q: "Entrepreneurial thinking is applicable to all with the exception of:", options: ["Start-ups", "Corporate innovation", "Social entrepreneurship", "Public corporations"], answer: 3 },
+      { q: "One of the following is not a trait of entrepreneurial thinking:", options: ["Innovation", "Job creation", "Economic growth", "Extortion"], answer: 3 },
+      { q: "Birds in hand is one of the principles of:", options: ["Effective thinking", "Critical thinking", "Opportunity thinking", "Visionary thinking"], answer: 2 },
+      { q: "Aliko Dangote is described as one of the successful ……… in Nigeria:", options: ["Manager", "Business magnet", "Entrepreneur", "Investor"], answer: 2 },
+      { q: "All with the exception of ……… are regarded as risk bearers.", options: ["Farmer", "Vendor", "Student", "Civil servant"], answer: 3 },
+      { q: "What is defined as coming up with something new or modifying an existing one?", options: ["Innovation", "Invention", "Creativity", "All of the above"], answer: 3 },
+      { q: "Creativity is defined as ………", options: ["The ability to analyse and evaluate existing ideas", "The ability to generate novel and valuable ideas, solutions, or products through an imaginative and innovative process", "The ability to implement existing solutions", "The ability to memorize and recall information"], answer: 1 },
+      { q: "The whole new design, ideally using new components configured in a new way is called ………", options: ["Incremental innovation", "Disruptive innovation", "Radical innovation", "Architectural innovation"], answer: 2 },
+      { q: "What is the primary goal of product innovation?", options: ["To develop new or improved products that meet customer needs and preferences", "To reduce costs and improve efficiency", "To increase market share and competitiveness", "To improve customer satisfaction and loyalty"], answer: 0 },
+      { q: "Process innovation implies ………", options: ["The development of new products or services", "The implementation of new or improved methods, techniques, or technologies to enhance the efficiency, productivity, and quality of organizational processes", "The creation of new business models", "The improvement of customer relationships"], answer: 1 },
+      { q: "What is business model innovation?", options: ["The improvement of existing business models", "The creation of new products or services", "The development of new or transformed business models that create, deliver, and capture value in innovative ways", "The reduction of costs and improvement of efficiency"], answer: 2 },
+      { q: "What is organizational innovation?", options: ["The implementation of new or improved organizational structures, management practices, or work processes that enhance a company's ability to create value and achieve its goals", "The development of new products or services", "The creation of new business models", "The improvement of customer relationships"], answer: 0 },
+      { q: "The term incremental innovation implies ………", options: ["Developing new products or services that are significantly different from existing ones", "Making small, gradual improvements to existing products, services, or processes", "Creating new business models that disrupt existing markets", "Improving customer relationships"], answer: 1 },
+      { q: "One of the following is a necessary requirement for business success:", options: ["Unique selling preposition", "Quality product", "Market proximity", "Good brand name"], answer: 0 },
+      { q: "The border closure and the banning of importation of rice during Late President Muhammad Buhari's regime is a good example of ………", options: ["Political factors", "Economic factor", "Security factor", "International Business control"], answer: 0 },
+      { q: "Nokia lost its market leadership in Northern Nigeria due to ………", options: ["Dominance of blackberry", "It is cheaper and people holding it lack social recognition", "Lack of incremental innovation", "All of the above"], answer: 3 },
+      { q: "IPhone's strategy of coming up with new IPhone models is a good example of ………", options: ["Radical Innovation", "Breakthrough innovation", "Incremental Innovation", "All of the above"], answer: 2 },
+      { q: "Which of the following is a major source of opportunity?", options: ["A problem", "An idea", "A market trend", "A new technology"], answer: 0 },
+      { q: "What does PESTEL Analysis stand for?", options: ["Product, Environment, Strategy, Technology, Economy, Law", "Planning, Execution, Strategy, Technology, Economy, Logistics", "Political, Economic, Social, Technological, Environmental, and Legal", "Performance, Efficiency, Structure, Technology, Economy, Leadership"], answer: 2 },
+      { q: "How does Incremental Innovation differ from Radical Innovation?", options: ["Incremental innovation creates new markets, while radical innovation improves existing markets", "Incremental innovation improves existing designs, while radical innovation creates entirely new designs", "Incremental innovation is riskier than radical innovation", "Incremental innovation is more expensive than radical innovation"], answer: 1 },
+      { q: "All the following signifies the need for corporate entrepreneurship except ………", options: ["Growth", "Source of competitive advantage", "Increase productivity", "Consolidation"], answer: 3 },
+      { q: "Which of the following is not a required management approach to corporate entrepreneurship?", options: ["Support", "Taking a step back", "Coercion", "Communication"], answer: 2 },
+      { q: "All the following are elements of organizational structure except ………", options: ["Specialization", "Departmentation", "Formalization", "Strategizing"], answer: 3 },
+      { q: "Specialization is a method of production whereby an entity focuses on the production of a limited scope of goods to gain a greater degree of ………", options: ["Quantity", "Efficiency", "Affordability", "Quality"], answer: 1 },
+      { q: "The formalization of an organization is the result of the management's tendency towards ………", options: ["Bureaucracy", "Adaptability", "Rigidity", "Simplicity"], answer: 0 },
+      { q: "Centralization is the process by which the activities of an organization, particularly those regarding planning and decision-making, framing strategy and policies become concentrated under a ………", options: ["The entire management", "Single authority", "Board", "Departments"], answer: 1 },
+      { q: "Departmentalization or Departmentation is a process wherein jobs/teams are combined together into functional units called ………", options: ["Central Units", "Units", "Departments", "Sections"], answer: 2 },
+      { q: "Span of control refers to the number of ……… a supervisor has.", options: ["Products", "Instruments", "Branches", "Subordinates"], answer: 3 },
+      { q: "Which of the following is not a form of Corporate entrepreneurship?", options: ["Internal corporate venturing", "Cooperative corporate venturing", "External corporate venturing", "Resource mobilization."], answer: 3 },
+      { q: "Organizational rejuvenation refers to an entrepreneurial strategy where the organization's logic is to improve or sustain its competitive position by modifying existing internal processes, capabilities, or ………", options: ["Structures", "Location", "System", "Application"], answer: 0 },
+      { q: "The process by which organization redefines its relationships with its competitors by altering its competitive strategies and practices is known as ………", options: ["Strategic renewal", "Process restructuring", "Adaptability", "Competition"], answer: 0 },
+      { q: "The entrepreneurial practice whereby the organization introduces new products and services or enters new markets on a regular basis is called ………", options: ["Searching", "Marketing", "Sustained regeneration", "Market disruption"], answer: 2 },
+      { q: "……… refers to the entrepreneurial phenomenon whereby the organization proactively creates a new product-market arena that others have not recognized or actively sought to exploit.", options: ["Formalization", "Product advocacy", "Domain redefinition", "Idea exploitation"], answer: 2 },
+      { q: "……… refers to an entrepreneurial strategy where the organization recalibrates its business model to improve operational efficiencies.", options: ["Business model reconstruction", "Idea generation", "Optimization", "Structure"], answer: 0 },
+      { q: "Corporate entrepreneurship (also known as intrapreneurship) is defined as: \"The birth of new business within ……… organizations.\"", options: ["Aged portfolio", "Existing", "Bankrupt", "Start up"], answer: 1 }
+    ]
+  },
+  "ent211_practice_100": {
+  title: "ENT211 Practice Questions (Definitions, Creativity, Formation, Contemporary Issues, Nigeria & Social Entrepreneurship)",
+  code: "ENT 211",
+  questions: [
+    { q: "The French word from which the term \"entrepreneur\" is derived is:", options: ["Entreprendre", "Enterprise", "Entreprenuer", "Entrepreneurial"], answer: 0 },
+    { q: "Jean-Baptiste Say defined entrepreneurship as:", options: ["A process of doing new things within a new philosophy of value", "The ability to make profit only", "A government-regulated business activity", "The process of copying existing businesses"], answer: 0 },
+    { q: "An entrepreneur is someone who:", options: ["Identifies and acts on an idea no one else has identified", "Only manages existing businesses", "Works as an employee in a corporation", "Avoids taking any business risks"], answer: 0 },
+    { q: "Which of the following is NOT a type of entrepreneurship?", options: ["Economic entrepreneurship", "Social entrepreneurship", "Passive entrepreneurship", "Intrapreneurship"], answer: 2 },
+    { q: "Economic entrepreneurship primarily focuses on:", options: ["Creating value for society without profit", "Making financial gains and profit", "Solving environmental problems", "Running NGOs"], answer: 1 },
+    { q: "Social entrepreneurship is characterized by:", options: ["Maximizing shareholder profit", "Creating value in solving societal problems", "Avoiding all financial transactions", "Operating only in rural areas"], answer: 1 },
+    { q: "Intrapreneurship refers to:", options: ["Starting a new business independently", "Creating solutions by a salaried individual outside job obligation", "Government-sponsored entrepreneurship", "International business ventures"], answer: 1 },
+    { q: "Corporate entrepreneurship involves:", options: ["Only small business activities", "Organizations engaged in innovation and new value creation", "Non-profit organizations only", "Government agencies"], answer: 1 },
+    { q: "Which of the following is a key feature of entrepreneurship?", options: ["Avoiding all forms of risk", "Maintaining the status quo", "Identifying and exploiting opportunities", "Working only for salary"], answer: 2 },
+    { q: "The entrepreneurial journey involves:", options: ["Multiple levels of self-discovery and experiences", "A single guaranteed path to success", "No risk-taking", "Following someone else's blueprint exactly"], answer: 0 },
+    { q: "Which type of entrepreneur finds new approaches that add value through solving problems uniquely?", options: ["Creators", "Market makers", "Innovators", "Expanders"], answer: 2 },
+    { q: "Market makers in entrepreneurship:", options: ["Only copy existing products", "Innovate or reinvent their market from a future perspective", "Avoid market competition", "Focus only on local markets"], answer: 1 },
+    { q: "Expanders and scalers in entrepreneurship:", options: ["Avoid growth opportunities", "Seek to expand upon previously created methods", "Only work in technology", "Never take risks"], answer: 1 },
+    { q: "According to Charles Kettering, what exists in every industry?", options: ["Limited opportunities", "Limitless opportunities", "Government regulations", "Market saturation"], answer: 1 },
+    { q: "The main difference between entrepreneurs and non-entrepreneurs is:", options: ["Family background", "Taking that first step", "Educational qualification", "Age"], answer: 1 },
+    { q: "Creativity is defined as:", options: ["Copying existing ideas", "The ability to develop something original", "Only artistic expression", "Following strict rules"], answer: 1 },
+    { q: "Critical thinking is:", options: ["Generating new ideas", "Clearly and logically considering information presented", "Taking unnecessary risks", "Ignoring evidence"], answer: 1 },
+    { q: "Creative thinking is about:", options: ["Following traditional methods", "Generating new, novel, or useful ideas", "Avoiding problems", "Maintaining the status quo"], answer: 1 },
+    { q: "SCAMPER is a tool for:", options: ["Financial analysis", "Enhancing creativity", "Legal compliance", "Employee evaluation"], answer: 1 },
+    { q: "Which of the following is NOT a component of SCAMPER?", options: ["Substitute", "Combine", "Replicate", "Modify"], answer: 2 },
+    { q: "Mind mapping is:", options: ["A financial planning tool", "Visual organization of ideas around a central concept", "A legal document", "A government regulation"], answer: 1 },
+    { q: "Lateral thinking involves:", options: ["Direct problem-solving", "Indirect and creative approach to solving problems", "Following standard procedures", "Avoiding challenges"], answer: 1 },
+    { q: "Brainstorming is:", options: ["Individual idea generation", "Generation of ideas in a judgment-free environment", "Financial analysis", "Legal consultation"], answer: 1 },
+    { q: "Fluency in creative skills refers to:", options: ["The ability to produce many ideas", "Adding detail to ideas", "The uniqueness of ideas", "Producing varied mix of ideas"], answer: 0 },
+    { q: "Originality in creative skills refers to:", options: ["Uniqueness, novelty, newness", "Producing many ideas", "Adding detail to ideas", "Following existing patterns"], answer: 0 },
+    { q: "An invention is:", options: ["A slight modification of existing products", "A unique or novel device, method, or process", "Copying someone else's idea", "A government document"], answer: 1 },
+    { q: "Which of the following is a category of invention?", options: ["Only scientific-technological", "Scientific-technological, sociopolitical, and humanistic", "Only economic inventions", "Only artistic inventions"], answer: 1 },
+    { q: "The four invention categories drawing on Aristotle include:", options: ["Only observation and logic", "Direct observation, logic, collaboration, and intuition", "Only collaboration and intuition", "Only experimentation and testing"], answer: 1 },
+    { q: "Which is NOT a type of product invention classification?", options: ["Product-cheapening inventions (C-type)", "Product-improving inventions (I-type)", "Product-selling inventions (S-type)", "Product inventions (P-type)"], answer: 2 },
+    { q: "Innovation is defined as:", options: ["Any new idea, process, or product that adds value", "Only technological changes", "Copying competitors", "Maintaining current products"], answer: 0 },
+    { q: "Innovation is specifically the:", options: ["Application of creativity", "Creation of art", "Legal process", "Financial transaction"], answer: 0 },
+    { q: "Which of the following is a source of innovation?", options: ["Only government policies", "The unexpected, incongruity, process need", "Only employee ideas", "Only customer complaints"], answer: 1 },
+    { q: "The unexpected as a source of innovation refers to:", options: ["Following market trends", "Looking for new opportunities in the market", "Avoiding change", "Maintaining existing products"], answer: 1 },
+    { q: "Which type of innovation involves creating entirely new markets?", options: ["Incremental innovation", "Disruptive innovation", "Sustenance innovation", "Minor innovation"], answer: 1 },
+    { q: "Incremental innovation refers to:", options: ["Major breakthroughs", "Small improvements to existing products", "Creating new industries", "Radical changes"], answer: 1 },
+    { q: "A feasibility study determines:", options: ["Only financial aspects", "If a project is technically possible, financially justifiable, and makes business sense", "Only market demand", "Government regulations only"], answer: 1 },
+    { q: "Market analysis in feasibility study involves:", options: ["Only competitor analysis", "Understanding demand, competition, and target customers", "Only financial projections", "Only legal requirements"], answer: 1 },
+    { q: "SWOT analysis stands for:", options: ["Strengths, Weaknesses, Opportunities, Threats", "Sales, Wages, Operations, Technology", "Strategy, Work, Organization, Time", "Systems, Workflows, Objectives, Targets"], answer: 0 },
+    { q: "An executive summary in a business plan:", options: ["Is optional", "Provides a concise overview of the entire plan", "Contains only financial data", "Is the last section"], answer: 1 },
+    { q: "Which business structure has unlimited personal liability?", options: ["Private Limited Company", "Sole Proprietorship", "Public Limited Company", "Cooperative Society"], answer: 1 },
+    { q: "A Private Limited Company is characterized by:", options: ["Unlimited liability", "Limited liability and more complex setup", "No registration requirements", "Only family ownership"], answer: 1 },
+    { q: "Partnerships involve:", options: ["Only profit sharing", "Shared responsibility and joint liability", "No legal obligations", "Only two people maximum"], answer: 1 },
+    { q: "The Corporate Affairs Commission (CAC) is responsible for:", options: ["Tax collection", "Business name reservation and company incorporation", "Product certification", "Environmental regulation"], answer: 1 },
+    { q: "NAFDAC is responsible for:", options: ["Company registration", "Product certification for food, drugs, and cosmetics", "Tax registration", "Export regulation"], answer: 1 },
+    { q: "FIRS stands for:", options: ["Federal Industrial Regulatory Service", "Federal Inland Revenue Service", "Federal Investment Registration Service", "Federal Insurance Regulation Service"], answer: 1 },
+    { q: "A strategic alliance is:", options: ["A legal requirement", "Non-equity cooperation for mutual benefit", "A government program", "Only for large corporations"], answer: 1 },
+    { q: "Networking for entrepreneurs provides:", options: ["Only social benefits", "Access to information, opportunities, and mentorship", "Guaranteed business success", "Only financial benefits"], answer: 1 },
+    { q: "The Standards Organization of Nigeria (SON) is responsible for:", options: ["Business registration", "Product and service standards enforcement", "Tax collection", "Import regulation"], answer: 1 },
+    { q: "A cooperative society is:", options: ["A government agency", "Member-owned and democratically controlled", "A for-profit corporation", "An international organization"], answer: 1 },
+    { q: "Franchise and joint ventures are examples of:", options: ["Only business structures", "Hybrid models for specific needs", "Government programs", "Non-profit organizations"], answer: 1 },
+    { q: "Intellectual Property Rights (IPR) protect:", options: ["Only physical assets", "Creative and innovative endeavors", "Only financial assets", "Only real estate"], answer: 1 },
+    { q: "Copyright protects:", options: ["Inventions and processes", "Original literary, musical, artistic, and dramatic works", "Brand names and logos", "Industrial designs"], answer: 1 },
+    { q: "Patents protect:", options: ["Brand names", "New, inventive, and industrially applicable products or processes", "Artistic works", "Company logos"], answer: 1 },
+    { q: "Trademarks protect:", options: ["Inventions", "Literary works", "Distinctive signs, symbols, names, or logos", "Industrial processes"], answer: 2 },
+    { q: "The Nigerian Copyright Commission (NCC) is responsible for:", options: ["Patent registration", "Copyright registration", "Trademark registration", "Company registration"], answer: 1 },
+    { q: "Industrial designs protect:", options: ["Brand names", "The aesthetic features or overall appearance of a product", "Literary works", "Software code"], answer: 1 },
+    { q: "Which of the following is NOT a category of IPR?", options: ["Copyright", "Patent", "Trademark", "Dividend"], answer: 3 },
+    { q: "Business ethics involves:", options: ["Maximizing profit at any cost", "Adhering to moral and ethical principles in business operations", "Avoiding all business activities", "Only following government regulations"], answer: 1 },
+    { q: "Corporate Social Responsibility (CSR) refers to:", options: ["Only donating money", "Committing to contribute to sustainable development", "Avoiding taxes", "Only environmental activities"], answer: 1 },
+    { q: "Which is a common ethical issue in entrepreneurship?", options: ["Fair pricing", "Fraud and corruption", "Employee satisfaction", "Customer service"], answer: 1 },
+    { q: "FinTech in Nigeria has been revolutionized by companies like:", options: ["Only foreign companies", "Flutterwave and Paystack", "Traditional banks only", "Government agencies"], answer: 1 },
+    { q: "A virtual office provides:", options: ["Only physical office space", "A business address and office-related services without traditional office space", "Only legal services", "Only internet services"], answer: 1 },
+    { q: "Which is a benefit of virtual offices?", options: ["High overhead costs", "Low overhead costs and flexibility", "Limited global access", "No scalability"], answer: 1 },
+    { q: "Platforms like Zoom, Slack, and Trello are used for:", options: ["Financial transactions", "Virtual collaboration", "Legal services", "Government registration"], answer: 1 },
+    { q: "Industrial clusters are:", options: ["Only manufacturing plants", "Geographical concentrations of interconnected companies", "Government agencies", "International organizations"], answer: 1 },
+    { q: "The Aba Garment Cluster is an example of:", options: ["Technology hub", "Industrial cluster in Nigeria", "Government agency", "International corporation"], answer: 1 },
+    { q: "Technology incubation centres provide:", options: ["Only office space", "Mentorship, business training, and access to funding", "Only financial support", "Only legal services"], answer: 1 },
+    { q: "Co-Creation Hub (CcHUB) is:", options: ["A government agency", "A leading innovation center in Nigeria", "A traditional bank", "An international corporation"], answer: 1 },
+    { q: "The Tony Elumelu Foundation provides:", options: ["Only loans", "Seed capital, mentorship, and training to African entrepreneurs", "Only job placements", "Only business registration"], answer: 1 },
+    { q: "Cloud computing in entrepreneurship enables:", options: ["Physical expansion", "Scalable infrastructure and remote operations", "Only data storage", "Only email services"], answer: 1 },
+    { q: "Nigeria is often called the \"Giant of Africa\" because of its:", options: ["Only geographical size", "Immense economic and demographic potential", "Only military strength", "Only oil reserves"], answer: 1 },
+    { q: "Nigeria's population exceeds:", options: ["100 million", "200 million", "500 million", "50 million"], answer: 1 },
+    { q: "Over 60% of Nigeria's population is:", options: ["Above 50 years", "Under 25 years", "Retired", "Foreign nationals"], answer: 1 },
+    { q: "The informal sector in Nigeria is characterized by:", options: ["Large-scale formal employment", "Self-employment and resilience", "Government regulation", "International corporations"], answer: 1 },
+    { q: "Aliko Dangote is known for:", options: ["Technology innovation", "Manufacturing and exports", "Banking", "Entertainment"], answer: 1 },
+    { q: "Linda Ikeji is a pioneer in:", options: ["Manufacturing", "Online media and blogging", "Banking", "Agriculture"], answer: 1 },
+    { q: "Tony Elumelu champions the concept of:", options: ["Only profit maximization", "Africapitalism", "Only government intervention", "Only international trade"], answer: 1 },
+    { q: "The Tony Elumelu Entrepreneurship Programme (TEEP) provides:", options: ["Only loans", "Seed capital, mentoring, and training", "Only job placements", "Only research grants"], answer: 1 },
+    { q: "YouWIN was a government initiative that:", options: ["Provided tax exemptions", "Provided grants to young entrepreneurs", "Created government jobs", "Imported goods"], answer: 1 },
+    { q: "The National Youth Investment Fund (NYIF) supports:", options: ["Only large corporations", "Youth-owned businesses", "Only international companies", "Government agencies"], answer: 1 },
+    { q: "Women entrepreneurs in Nigeria face challenges including:", options: ["Only competition", "Limited access to finance and market information", "Only pricing issues", "Only advertising challenges"], answer: 1 },
+    { q: "The Bank of Industry (BOI) provides:", options: ["Only consumer loans", "Long-term financing for SMEs and large industries", "Only agricultural loans", "Only housing loans"], answer: 1 },
+    { q: "SMEDAN focuses on:", options: ["International trade", "Capacity building and business registration", "Only manufacturing", "Only exports"], answer: 1 },
+    { q: "PESTEL analysis in entrepreneurship includes:", options: ["Only economic factors", "Political, Economic, Socio-cultural, Technological, Ecological, and Legal factors", "Only social factors", "Only technological factors"], answer: 1 },
+    { q: "E-commerce refers to:", options: ["Only online shopping", "Buying and selling using the internet", "Only payment processing", "Only delivery services"], answer: 1 },
+    { q: "Social entrepreneurship is defined as:", options: ["Maximizing profit only", "Marrying social impact with entrepreneurial zeal", "Government-sponsored business", "Traditional charity"], answer: 1 },
+    { q: "Social entrepreneurs are:", options: ["Only motivated by profit", "Driven by social missions and innovative solutions", "Only working in healthcare", "Only in developed countries"], answer: 1 },
+    { q: "The dual bottom line in social entrepreneurship refers to:", options: ["Two types of profit", "Social value and financial sustainability", "Only social impact", "Only financial profit"], answer: 1 },
+    { q: "A non-profit with income-generating activities is an example of:", options: ["Traditional business", "Social enterprise model", "Government agency", "International corporation"], answer: 1 },
+    { q: "A hybrid model in social entrepreneurship:", options: ["Only uses donations", "Blends non-profit and for-profit structures", "Only generates profit", "Only provides services"], answer: 1 },
+    { q: "Social Return on Investment (SROI) measures:", options: ["Only financial returns", "Social impact and value created", "Only environmental impact", "Only employee satisfaction"], answer: 1 },
+    { q: "Social enterprises in Nigeria complement:", options: ["Only business activities", "Government and NGO efforts", "Only international programs", "Only religious institutions"], answer: 1 },
+    { q: "Slum2School is an example of:", options: ["Traditional business", "Social enterprise in Nigeria", "Government agency", "International corporation"], answer: 1 },
+    { q: "Which of the following is NOT a challenge for social enterprises in Nigeria?", options: ["Legal and policy frameworks", "Access to funding", "Excessive government support", "Impact measurement"], answer: 2 },
+    { q: "Impact investors seek:", options: ["Only financial returns", "Both financial return and measurable social impact", "Only social impact", "Only environmental compliance"], answer: 1 },
+    { q: "Crowdfunding platforms like GoFundMe are used for:", options: ["Traditional bank loans", "Raising small amounts from large numbers of individuals", "Government grants", "Corporate investments"], answer: 1 },
+    { q: "The concept of \"Theory of Change\" in social enterprises helps:", options: ["Only financial planning", "Articulate how activities lead to outcomes and impact", "Only marketing strategies", "Only legal compliance"], answer: 1 },
+    { q: "Early community-based enterprises in Nigeria were:", options: ["Only formal businesses", "Informal enterprises serving social purposes", "Government agencies", "International corporations"], answer: 1 },
+    { q: "Nigerian foundations supporting social enterprises include:", options: ["Only international foundations", "Tony Elumelu Foundation and TY Danjuma Foundation", "Only government foundations", "Only religious foundations"], answer: 1 },
+    { q: "Accountability and trust in social enterprises requires:", options: ["Only financial reporting", "Transparent reporting of both financial and social impact", "Only social media presence", "Only government certification"], answer: 1 }
+  ]
+}
+};
+
+if (typeof module !== 'undefined') module.exports = sessions;
+
+
+/* ============================================================
+   APP LOGIC
+   ============================================================ */
+let selectedSessionKey = null;
+let questions = [];
+let currentIndex = 0;
+let userAnswers = [];
+let score = 0;
+let answered = false;
+let lastSettings = { key: null, count: 20 };
+
+function init() {
+  const grid = document.getElementById('session-grid');
+  grid.innerHTML = '';
+  for (const [key, sess] of Object.entries(sessions)) {
+    const card = document.createElement('div');
+    card.className = 'session-card';
+    card.dataset.key = key;
+    card.innerHTML = `
+      <div class="title">${sess.title}</div>
+      <div class="meta">${sess.code}</div>
+      <span class="count">${sess.questions.length} questions</span>
+    `;
+    card.onclick = () => selectSession(key);
+    grid.appendChild(card);
+  }
+
+  const slider = document.getElementById('q-slider');
+  slider.addEventListener('input', () => {
+    document.getElementById('slider-value').textContent = slider.value;
+  });
+}
+
+function selectSession(key) {
+  selectedSessionKey = key;
+  document.querySelectorAll('.session-card').forEach(c => c.classList.remove('selected'));
+  document.querySelector(`.session-card[data-key="${key}"]`).classList.add('selected');
+
+  const max = sessions[key].questions.length;
+  const slider = document.getElementById('q-slider');
+  slider.max = max;
+  slider.value = Math.min(20, max);
+  document.getElementById('slider-value').textContent = slider.value;
+  document.getElementById('slider-max').textContent = max;
+  document.getElementById('slider-section').style.display = 'block';
+  document.getElementById('start-btn').disabled = false;
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  if (!selectedSessionKey) return;
+  const count = parseInt(document.getElementById('q-slider').value, 10);
+  const pool = sessions[selectedSessionKey].questions;
+  questions = shuffle(pool).slice(0, Math.min(count, pool.length));
+  lastSettings = { key: selectedSessionKey, count };
+
+  currentIndex = 0;
+  userAnswers = new Array(questions.length).fill(null);
+  score = 0;
+  answered = false;
+
+  document.getElementById('start-screen').classList.remove('active');
+  document.getElementById('result-screen').classList.remove('active');
+  document.getElementById('quiz-screen').classList.add('active');
+  document.getElementById('review-section').style.display = 'none';
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = questions[currentIndex];
+  answered = userAnswers[currentIndex] !== null;
+
+  document.getElementById('q-counter').textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+  document.getElementById('score-live').textContent = `Score: ${score}`;
+  document.getElementById('progress-fill').style.width = `${(currentIndex / questions.length) * 100}%`;
+  document.getElementById('q-num').textContent = `Q${currentIndex + 1}`;
+  document.getElementById('question-text').textContent = q.q;
+
+  const optionsEl = document.getElementById('options');
+  optionsEl.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D', 'E'];
+  q.options.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    if (answered) {
+      div.classList.add('disabled');
+      if (i === q.answer) div.classList.add('correct');
+      if (userAnswers[currentIndex] === i && i !== q.answer) div.classList.add('wrong');
+      if (userAnswers[currentIndex] === i) div.classList.add('selected');
+    }
+    div.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+    div.onclick = () => selectOption(i);
+    optionsEl.appendChild(div);
+  });
+
+  const feedback = document.getElementById('feedback');
+  feedback.className = 'feedback';
+  if (answered) {
+    const correct = userAnswers[currentIndex] === q.answer;
+    feedback.classList.add('show', correct ? 'correct' : 'wrong');
+    feedback.textContent = correct
+      ? '✓ Correct!'
+      : `✗ Incorrect. Correct answer: ${letters[q.answer]}. ${q.options[q.answer]}`;
+  }
+
+  document.getElementById('prev-btn').style.display = currentIndex > 0 ? 'inline-flex' : 'none';
+  const nextBtn = document.getElementById('next-btn');
+  nextBtn.disabled = !answered;
+  nextBtn.textContent = currentIndex === questions.length - 1 ? 'Finish' : 'Next';
+}
+
+function selectOption(index) {
+  if (userAnswers[currentIndex] !== null) return;
+  userAnswers[currentIndex] = index;
+  if (index === questions[currentIndex].answer) score++;
+  answered = true;
+  showQuestion();
+}
+
+function nextQuestion() {
+  if (currentIndex < questions.length - 1) {
+    currentIndex++;
+    showQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function prevQuestion() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    showQuestion();
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz-screen').classList.remove('active');
+  document.getElementById('result-screen').classList.add('active');
+
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+  document.getElementById('score-circle').style.setProperty('--pct', pct);
+  document.getElementById('final-score').textContent = pct + '%';
+  document.getElementById('score-fraction').textContent = `${score} / ${total}`;
+  document.getElementById('session-label').textContent = sessions[lastSettings.key].title;
+
+  let msg = '', sub = '';
+  if (pct >= 80) { msg = 'Excellent! 🔥'; sub = 'You are well prepared for this paper.'; }
+  else if (pct >= 60) { msg = 'Good job!'; sub = 'Solid performance. Review the weak areas.'; }
+  else if (pct >= 40) { msg = 'Fair attempt'; sub = 'Keep practising — you can improve.'; }
+  else { msg = 'Needs more work'; sub = 'Go through the review carefully and try again.'; }
+  document.getElementById('result-msg').textContent = msg;
+  document.getElementById('result-sub').textContent = sub;
+}
+
+function showReview() {
+  const section = document.getElementById('review-section');
+  section.style.display = 'block';
+  const list = document.getElementById('review-list');
+  list.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D', 'E'];
+  questions.forEach((q, i) => {
+    const correct = userAnswers[i] === q.answer;
+    const div = document.createElement('div');
+    div.className = `review-item ${correct ? 'correct' : 'wrong'}`;
+    div.innerHTML = `
+      <div class="review-q">${i + 1}. ${q.q}</div>
+      <div class="review-a">
+        Your answer: <span class="your-ans ${correct ? '' : 'wrong'}">${userAnswers[i] !== null ? letters[userAnswers[i]] + '. ' + q.options[userAnswers[i]] : 'Not answered'}</span><br>
+        Correct answer: <span class="correct-ans">${letters[q.answer]}. ${q.options[q.answer]}</span>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+  section.scrollIntoView({ behavior: 'smooth' });
+}
+
+function restartSame() {
+  selectedSessionKey = lastSettings.key;
+  document.getElementById('q-slider').value = lastSettings.count;
+  startQuiz();
+}
+
+function goHome() {
+  document.getElementById('result-screen').classList.remove('active');
+  document.getElementById('start-screen').classList.add('active');
+  // keep previous selection if any
+}
+
+init();
+</script>
+</body>
+</html>
