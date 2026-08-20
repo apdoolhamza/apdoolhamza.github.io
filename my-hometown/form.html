@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan a Visit &mdash; Kano, My Hometown</title>
+<meta name="description" content="Tell us about your trip to Kano and we'll send you a suggested itinerary.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav id="main-nav" aria-label="Primary">
+  <div class="wrap nav-inner">
+    <a href="index.html" class="brand"><span class="mark"></span>Kano</a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="about.html">About Us</a>
+      <a class="nav-link" href="gallery.html">Gallery</a>
+      <a class="nav-link" href="table.html">Visitor Info</a>
+      <a class="nav-link" href="form.html" aria-current="page">Plan a Visit</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="wrap">
+    <span class="eyebrow">Get in touch</span>
+    <h1>Plan your visit</h1>
+    <p class="tagline">Tell us a little about your trip and we'll point you toward the right markets, sights, and guides.</p>
+  </div>
+</header>
+
+<main>
+  <section class="wrap">
+    <h2>Trip request form</h2>
+
+    <!-- CSS Grid layout (technical requirement) -->
+    <form class="form-shell" action="#" method="post">
+
+      <div class="field-grid">
+        <div class="field">
+          <label for="fullname">Full name</label>
+          <input type="text" id="fullname" name="fullname" placeholder="Amina Bello" required>
+        </div>
+
+        <div class="field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email" placeholder="amina@example.com" required>
+        </div>
+      </div>
+
+      <div class="field full">
+        <label for="interest">Main interest</label>
+        <select id="interest" name="interest">
+          <option value="markets">Markets &amp; textiles</option>
+          <option value="history">History &amp; the city walls</option>
+          <option value="culture">Culture &amp; the Durbar</option>
+          <option value="food">Food</option>
+        </select>
+      </div>
+
+      <fieldset class="field full">
+        <legend>Trip length</legend>
+        <div class="choice-group">
+          <label><input type="radio" name="tripLength" value="day" checked> Day trip</label>
+          <label><input type="radio" name="tripLength" value="weekend"> Weekend</label>
+          <label><input type="radio" name="tripLength" value="week"> A week or more</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="field full">
+        <legend>Send me updates about</legend>
+        <div class="choice-group">
+          <label><input type="checkbox" name="updates" value="events"> Local events</label>
+          <label><input type="checkbox" name="updates" value="food"> Food &amp; markets</label>
+          <label><input type="checkbox" name="updates" value="deals"> Travel deals</label>
+        </div>
+      </fieldset>
+
+      <div class="field full">
+        <button type="submit" class="btn btn-dark">Send request</button>
+        <p class="form-note">We'll reply within two working days with a suggested itinerary.</p>
+      </div>
+
+    </form>
+  </section>
+</main>
+
+<footer id="site-footer">
+  <div class="wrap footer-inner">
+    <p>&copy; 2026 Kano, My Hometown &mdash; IFT 203 Group Project</p>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="gallery.html">Gallery</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
