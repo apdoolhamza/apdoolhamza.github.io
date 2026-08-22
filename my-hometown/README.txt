@@ -7,12 +7,12 @@ GROUP MEMBERS AND PAGE ASSIGNMENTS
 2) Name: ZAHARADDEN AMINU | Reg No: CST/24/IFT/00050 | Page: Home (index.html)
 3) Name: AHMAD MAHI SAID | Reg No: CST/23/IFT/00910 | Page: About Us (about.html)
 4) Name: ABDULRAHMAN YAHAYA | Reg No: CST/24/IFT/00040 | Page: About Us (about.html)
-5) Name: NAJEEB BELLO | Reg No: CST/22/COM/00964 | Page: Gallery (gallery.html)
+5) Name: NAJEEB SA’AD BELLO | Reg No: CST/22/COM/00964 | Page: Gallery (gallery.html)
 6) Name: ABDALLAH SALIHU YUSUF | Reg No: CST/24/IFT/00022 | Page: Gallery (gallery.html)
 7) Name: SAIFULLAHI MUHAMMAD HASSAN | Reg No: CST/24/COM/00115 | Page: Table (table.html)
 8) Name: DESTINY MUSA ERNEST | Reg No: CST/24/COM/00020 | Page: Table (table.html)
 9) Name: AJAO HEPHZIBAH ABIODUN | Reg No: CST/24/COM/00012 | Page: Form (form.html)
-10) Name: ______________________ | Reg No: ______________ | Page: Form (form.html)
+10) Name: AVALUMUN LAZARUS AHAMBER| Reg No: CST/24/IFT/00012 | Page: Form (form.html)
 
 TOPIC: My Hometown (registration numbers ending in 0 or 2)
 
