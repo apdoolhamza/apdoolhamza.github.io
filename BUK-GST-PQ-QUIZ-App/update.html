@@ -1,0 +1,950 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>GST212 Philosophy Quiz</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+
+<style>
+  /* Layout: single-column quiz flow with fixed progress header */
+  :root {
+    --bg: #f8f7f5;
+    --surface: #ffffff;
+    --surface2: #f0eff0;
+    --fg: #1a1820;
+    --fg2: #5a5765;
+    --fg3: #9490a0;
+    --accent: #5b3cf5;
+    --accent-light: #ede9ff;
+    --success: #16a34a;
+    --success-light: #dcfce7;
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --warn: #d97706;
+    --warn-light: #fef3c7;
+    --border: #e2e0e8;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(91,60,245,0.08);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #100f14;
+      --surface: #1c1a24;
+      --surface2: #252330;
+      --fg: #f0eef8;
+      --fg2: #a09ab8;
+      --fg3: #655f80;
+      --accent: #7c5ef8;
+      --accent-light: #2d2460;
+      --success: #22c55e;
+      --success-light: #14301e;
+      --danger: #f87171;
+      --danger-light: #2d1414;
+      --warn: #fbbf24;
+      --warn-light: #2d2010;
+      --border: #2e2a3c;
+      --shadow: 0 2px 12px rgba(0,0,0,0.3);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #100f14;
+    --surface: #1c1a24;
+    --surface2: #252330;
+    --fg: #f0eef8;
+    --fg2: #a09ab8;
+    --fg3: #655f80;
+    --accent: #7c5ef8;
+    --accent-light: #2d2460;
+    --success: #22c55e;
+    --success-light: #14301e;
+    --danger: #f87171;
+    --danger-light: #2d1414;
+    --warn: #fbbf24;
+    --warn-light: #2d2010;
+    --border: #2e2a3c;
+    --shadow: 0 2px 12px rgba(0,0,0,0.3);
+    color-scheme: dark;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100%;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 0;
+  }
+
+  /* ── Header ── */
+  .quiz-header {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 20;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px max(16px, env(safe-area-inset-left, 0px));
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0 0 auto;
+    height: env(safe-area-inset-top, 0px);
+    background: var(--surface);
+    z-index: 21;
+  }
+
+  .header-info { flex: 1; min-width: 0; }
+  .header-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .header-counter {
+    font-size: 12px;
+    color: var(--fg3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .header-score {
+    text-align: right;
+    white-space: nowrap;
+  }
+  .score-label { font-size: 11px; color: var(--fg3); }
+  .score-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--fg);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Screens ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── Start Screen ── */
+  .start-screen {
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 48px 0 64px;
+    text-align: center;
+  }
+  .start-badge {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .start-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(24px, 5vw, 36px);
+    font-weight: 700;
+    line-height: 1.2;
+    text-wrap: balance;
+    margin: 0 0 12px;
+  }
+  .start-sub {
+    color: var(--fg2);
+    font-size: 15px;
+    margin: 0 0 36px;
+  }
+
+  .start-stats {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+  }
+  .stat-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 18px;
+    text-align: center;
+    min-width: 90px;
+  }
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-lbl { font-size: 11px; color: var(--fg3); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .mode-cards {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .mode-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.15s, background 0.15s;
+    flex: 1;
+    min-width: 150px;
+    max-width: 200px;
+  }
+  .mode-card.selected {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .mode-card-icon { font-size: 22px; margin-bottom: 6px; }
+  .mode-card-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fg);
+  }
+  .mode-card-desc { font-size: 12px; color: var(--fg2); margin-top: 2px; }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 32px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-primary:active { transform: scale(0.97); }
+
+  /* ── Quiz Screen ── */
+  .quiz-body {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 24px 0 80px;
+  }
+
+  .question-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+  }
+  .question-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .q-num {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .q-topic {
+    font-size: 11px;
+    color: var(--fg3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+  .q-text {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--fg);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .option-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.15s, background 0.15s;
+    width: 100%;
+    color: var(--fg);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct {
+    border-color: var(--success);
+    background: var(--success-light);
+    color: var(--success);
+  }
+  .option-btn.wrong {
+    border-color: var(--danger);
+    background: var(--danger-light);
+    color: var(--danger);
+  }
+  .option-btn.reveal-correct {
+    border-color: var(--success);
+    background: var(--success-light);
+    color: var(--success);
+    opacity: 0.7;
+  }
+  .opt-letter {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border-radius: 6px;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--fg2);
+    transition: background 0.15s, color 0.15s;
+  }
+  .option-btn.correct .opt-letter {
+    background: var(--success);
+    color: #fff;
+  }
+  .option-btn.wrong .opt-letter {
+    background: var(--danger);
+    color: #fff;
+  }
+  .option-btn.reveal-correct .opt-letter {
+    background: var(--success);
+    color: #fff;
+  }
+
+  .feedback-box {
+    display: none;
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .feedback-box.show { display: flex; gap: 10px; align-items: flex-start; }
+  .feedback-box.correct-fb { background: var(--success-light); color: var(--success); }
+  .feedback-box.wrong-fb { background: var(--danger-light); color: var(--danger); }
+  .fb-icon { font-size: 16px; flex-shrink: 0; }
+
+  .nav-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    justify-content: flex-end;
+  }
+  .btn-next {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 11px 22px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn-next.show { display: inline-flex; }
+  .btn-next:hover { opacity: 0.9; }
+
+  /* ── Results Screen ── */
+  .results-screen {
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 48px 0 80px;
+    text-align: center;
+  }
+  .result-trophy { font-size: 56px; margin-bottom: 16px; }
+  .result-grade {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(48px, 10vw, 72px);
+    font-weight: 700;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .result-label {
+    font-size: 15px;
+    color: var(--fg2);
+    margin-bottom: 32px;
+  }
+
+  .result-breakdown {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .rb-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 20px;
+    min-width: 90px;
+  }
+  .rb-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    display: block;
+    font-variant-numeric: tabular-nums;
+  }
+  .rb-num.good { color: var(--success); }
+  .rb-num.bad { color: var(--danger); }
+  .rb-lbl { font-size: 11px; color: var(--fg3); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .result-message {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 24px;
+    margin-bottom: 28px;
+    font-size: 14px;
+    color: var(--fg2);
+    line-height: 1.6;
+  }
+
+  .result-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface);
+    color: var(--fg);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 22px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); }
+
+  /* Category filter */
+  .category-filter {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .cat-btn {
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--fg2);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .cat-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 480px) {
+    .question-card { padding: 18px; }
+    .start-title { font-size: 22px; }
+    .mode-cards { flex-direction: column; align-items: stretch; }
+    .mode-card { max-width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; }
+  }
+</style>
+
+<!-- START SCREEN -->
+<div id="screen-start" class="screen active">
+  <div class="start-screen">
+    <div class="start-badge">Bayero University, Kano</div>
+    <h1 class="start-title">GST212 Philosophy, Logic &amp; Human Existence</h1>
+    <p class="start-sub">Test your understanding of philosophy, logic, critical thinking &amp; metaphysics</p>
+
+    <div class="start-stats">
+      <div class="stat-chip">
+        <span class="stat-num">100</span>
+        <span class="stat-lbl">Questions</span>
+      </div>
+      <div class="stat-chip">
+        <span class="stat-num">5</span>
+        <span class="stat-lbl">Topics</span>
+      </div>
+      <div class="stat-chip">
+        <span class="stat-num">MCQ</span>
+        <span class="stat-lbl">Format</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px; font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:600; color:var(--fg2); text-align:left;">Select topic:</div>
+    <div class="category-filter" id="cat-filter">
+      <button class="cat-btn active" data-cat="all">All Topics</button>
+      <button class="cat-btn" data-cat="logic">Logic</button>
+      <button class="cat-btn" data-cat="fallacies">Fallacies</button>
+      <button class="cat-btn" data-cat="syllogism">Syllogism</button>
+      <button class="cat-btn" data-cat="philosophy">Philosophy</button>
+      <button class="cat-btn" data-cat="metaphysics">Metaphysics</button>
+      <button class="cat-btn" data-cat="critical">Critical Thinking</button>
+    </div>
+
+    <div style="margin-bottom:16px; font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:600; color:var(--fg2); text-align:left; margin-top:16px;">Quiz mode:</div>
+    <div class="mode-cards">
+      <div class="mode-card selected" data-mode="full" onclick="selectMode(this)">
+        <div class="mode-card-icon">📋</div>
+        <div class="mode-card-name">Full Exam</div>
+        <div class="mode-card-desc">All questions in order</div>
+      </div>
+      <div class="mode-card" data-mode="practice" onclick="selectMode(this)">
+        <div class="mode-card-icon">🎯</div>
+        <div class="mode-card-name">Practice</div>
+        <div class="mode-card-desc">20 random questions</div>
+      </div>
+      <div class="mode-card" data-mode="speed" onclick="selectMode(this)">
+        <div class="mode-card-icon">⚡</div>
+        <div class="mode-card-name">Speed Round</div>
+        <div class="mode-card-desc">10 quick-fire questions</div>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="startQuiz()">
+      Start Quiz →
+    </button>
+  </div>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div id="screen-quiz" class="screen">
+  <div class="quiz-header" id="quiz-header" style="display:none;">
+    <div class="header-info">
+      <div class="header-title">GST212 Quiz</div>
+      <div class="header-counter" id="q-counter">Question 1 of 100</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="header-score">
+      <div class="score-label">Score</div>
+      <div class="score-val" id="score-display">0</div>
+    </div>
+  </div>
+
+  <div class="quiz-body">
+    <div class="question-card" id="question-card">
+      <div class="question-top">
+        <div>
+          <div class="q-num" id="q-num">Q1</div>
+          <div class="q-topic" id="q-topic">Logic</div>
+        </div>
+      </div>
+      <p class="q-text" id="q-text"></p>
+      <div class="options-list" id="options-list"></div>
+      <div class="feedback-box" id="feedback-box">
+        <span class="fb-icon" id="fb-icon"></span>
+        <span id="fb-text"></span>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">
+        Next →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div id="screen-results" class="screen">
+  <div class="results-screen">
+    <div class="result-trophy" id="result-trophy">🎓</div>
+    <div class="result-grade" id="result-grade">0%</div>
+    <div class="result-label" id="result-label">Quiz Complete</div>
+    <div class="result-breakdown">
+      <div class="rb-chip">
+        <span class="rb-num good" id="res-correct">0</span>
+        <span class="rb-lbl">Correct</span>
+      </div>
+      <div class="rb-chip">
+        <span class="rb-num bad" id="res-wrong">0</span>
+        <span class="rb-lbl">Wrong</span>
+      </div>
+      <div class="rb-chip">
+        <span class="rb-num" id="res-total" style="color:var(--accent)">0</span>
+        <span class="rb-lbl">Total</span>
+      </div>
+    </div>
+    <div class="result-message" id="result-message"></div>
+    <div class="result-buttons">
+      <button class="btn-secondary" onclick="restartSame()">↺ Try Again</button>
+      <button class="btn-primary" onclick="goHome()">← Change Mode</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ALL_QUESTIONS = [
+  // ── LOGIC (Q1–14, Q15–16, Q37–43, Q99–100) ──
+  {id:1, cat:"logic", text:"Logic is the study of the criteria used for the evaluation of ……", opts:["Statements","Induction","Conclusion","Arguments"], ans:3},
+  {id:2, cat:"logic", text:"Logic is a tool used in developing reasonable conclusions based on a given set of ……", opts:["Arguments","Sound reasoning","Conclusion","Information"], ans:0},
+  {id:3, cat:"logic", text:"Logic enables one to produce a new information from ……", opts:["Old Information","Logic","Invalid Information","Arguments"], ans:0},
+  {id:4, cat:"logic", text:'"The first ball I pulled from a bag is red. The second ball I pulled from the same bag is red. Therefore, all the balls in the bag are red." This is an example of ……', opts:["Deductive reasoning","Inductive reasoning","Abductive reasoning","Absent of reasoning"], ans:1},
+  {id:5, cat:"logic", text:'"Dogs have cells in their bodies, and all cells have RNA. Therefore, dogs have RNA." This is an example of ……', opts:["Deductive reasoning","Inductive reasoning","Abductive reasoning","Good reasoning"], ans:0},
+  {id:6, cat:"logic", text:"Logic can also be called ……", opts:["Reasoning","Philosophy","Wisdom","Induction"], ans:0},
+  {id:7, cat:"logic", text:'"My mother is a Nigerian. She has woolly hair. Therefore, everyone woman from Nigeria has woolly hair." This is an example of ……', opts:["Deductive reasoning","Inductive reasoning","Abductive reasoning","Good reasoning"], ans:1},
+  {id:8, cat:"logic", text:"…… is used in medical examination.", opts:["Valid Reason","Informal Reasoning","Logic","Abductive reasoning"], ans:3},
+  {id:9, cat:"logic", text:"Which of the reasoning is based on prediction?", opts:["Deductive reasoning","Inductive reasoning","Abductive reasoning","Good reasoning"], ans:1},
+  {id:10, cat:"logic", text:"Which of the following best defines an argument?", opts:["A heated exchange between two people","A group of statements where premises support a conclusion","Any statement that can be true or false","A contradiction between two propositions"], ans:1},
+  {id:11, cat:"logic", text:"An inductive argument with weak reasoning but true premises is:", opts:["strong","cogent","uncogent","valid"], ans:2},
+  {id:12, cat:"logic", text:'"All crimes are violations of the law. Theft is a crime. Therefore, theft is a violation of the law." This is an example of:', opts:["Inductive argument","Deductive argument","Invalid reasoning","Fallacy of ambiguity"], ans:1},
+  {id:13, cat:"logic", text:"Which of the following best illustrates a complex question fallacy?", opts:["Murder is wrong, so abortion is wrong.","If inflation rises, interest rates will rise.","Have you stopped cheating on exams?","You are too young to argue."], ans:2},
+  {id:14, cat:"logic", text:"Which of the following is a valid deductive argument?", opts:["All automakers are computer manufacturers. United Airlines is an automaker. Therefore, United Airlines is a computer manufacturer.","All banks are financial institutions. NNPC is a financial institution. Therefore, NNPC is a bank.","Amina hails from Adamawa. Some Adamawa people are tall. Therefore, Amina is tall.","Talatu is a saleswoman. Most saleswomen are extroverts. Therefore, Talatu is an extrovert."], ans:0},
+  {id:15, cat:"logic", text:"A strong inductive argument is one in which:", opts:["the conclusion is necessarily true","the conclusion is improbable","the conclusion probably follows from the premises","the premises are always false"], ans:2},
+  {id:16, cat:"logic", text:"A cogent argument is:", opts:["weak and has false premises","strong with at least one false premise","strong and has all true premises","deductive and invalid"], ans:2},
+  {id:99, cat:"logic", text:"…… is a system of principles that uses reason to determine if a conclusion is true or untrue.", opts:["Criteria","Philosophy","Logic","Science"], ans:2},
+  {id:100, cat:"logic", text:"Logic is the study of ………", opts:["Criteria","Philosophy","Reasoning","Emotion"], ans:2},
+
+  // ── FALLACIES (Q17–24) ──
+  {id:17, cat:"fallacies", text:'"Your honor, if you convict me, my children will starve." This is an example of:', opts:["Appeal to authority","Appeal to force","Appeal to pity","False cause"], ans:2},
+  {id:18, cat:"fallacies", text:"The Appeal to Authority (ad verecundiam) fallacy is committed when:", opts:["we rely on an expert in the correct field","we reject someone's argument because of personal bias","we rely on authority outside their field of expertise","we demand unnecessary proof"], ans:2},
+  {id:19, cat:"fallacies", text:"Which of the following is an example of Ad Hominem abusive?", opts:["You are just too ignorant to argue with me.","You cannot argue against pollution laws; you work in an oil company.","You say I should stop cheating, but you cheated in school too.","No one has proven ghosts don't exist, so they must exist."], ans:0},
+  {id:20, cat:"fallacies", text:'"Crimes of theft are increasing. Therefore, we must reinstate the death penalty." This is an example of:', opts:["Appeal to pity","Missing the point","Begging the question","Fallacy of division"], ans:1},
+  {id:21, cat:"fallacies", text:"The fallacy of equivocation occurs when:", opts:["An argument transfers attributes from parts to whole","A word is used in two different senses","A general rule is wrongly applied","An authority is misused"], ans:1},
+  {id:22, cat:"fallacies", text:"The fallacy of accident occurs when:", opts:["A general rule is misapplied to a case it doesn't fit","An effect is mistaken for a cause","A word has two meanings","A question assumes something unproven"], ans:0},
+  {id:23, cat:"fallacies", text:"A syllogism is a form of speech where a third statement, known as the conclusion, logically follows from two given statements, referred to as:", opts:["Argument","Ontology","propositions","syllogism connectives"], ans:2},
+  {id:24, cat:"fallacies", text:"The principles of all syllogisms are:", opts:["Wisdom and fallacy","propositional arguments and conclusion","Valid and invalid principles — said of all and said of none","None of the above"], ans:2},
+
+  // ── SYLLOGISM (Q25–36) ──
+  {id:25, cat:"syllogism", text:'The conversion of the proposition "no book is liquid" is:', opts:["no metal thing is a book","no liquid thing is a book","no liquid exists","options a and b"], ans:1},
+  {id:26, cat:"syllogism", text:"To convert a proposition is to:", opts:["switch the subject and the predicate of it","switch the subject not the predicate","replace its predicate with sound argument","None of the above"], ans:0},
+  {id:27, cat:"syllogism", text:"The following describe the first rules of universal denial. Which is correct?", opts:["If it is true that every A is exactly B, then it is true that some B is not A","Every A not B is every B is A","If it is true that no A is B, it will also be true that no A is B","All of the above"], ans:2},
+  {id:28, cat:"syllogism", text:"The best describes the universal affirmation:", opts:["If every B is A, then by conversion some A is B.","Some A is B provided that every B is A","Given that all of B is known to be A, then one can conclude that A takes some part of B.","All of the above"], ans:3},
+  {id:29, cat:"syllogism", text:"One of the following is the Third Rule for Conversion of Ordinary Proposition:", opts:["The conversion of Universal denial","The conversion of Universal contradiction","None existential affirmation conversion","conversion of the particular affirmation"], ans:3},
+  {id:30, cat:"syllogism", text:"Every syllogism is made of …… propositions and will produce …… conclusion.", opts:["valid and sound","Valid and accurate","Sound and invalid","two and one main"], ans:3},
+  {id:31, cat:"syllogism", text:'Given the following syllogism: "Every B is A and Every C is B" its conclusion should be ……', opts:["Every A is B","Every C is A","None of A is C","None of the above"], ans:1},
+  {id:32, cat:"syllogism", text:'Given the following syllogism "Some B is not A and Every B is C" the following describe its conclusion:', opts:["Some A is not B","B and A are equivalent","some C is not A","options a and b"], ans:2},
+  {id:33, cat:"syllogism", text:"One of the following is true about conjunction:", opts:["For the compound statement to be true, both of its conjuncts must be true.","For the compound statement to be true, neither of the conjunct is true","For the compound statement to be true, at least one of the conjuncts should be true","For the compound statement to be true, either of the conjunct should be true"], ans:0},
+  {id:34, cat:"syllogism", text:"Logicians identify two types of disjunctions, these are:", opts:["Exclusive disjunction and Inclusive disjunction","Major and Minor disjunction","Relative and Conditional disjunction","negation and conclusive disjunction"], ans:0},
+  {id:35, cat:"syllogism", text:'Humans are not simply the only "logical" beings, they are also ……', opts:["Human beings","Good beings","Illogical beings","logical beings"], ans:3},
+  {id:36, cat:"syllogism", text:"The following are types of logic except:", opts:["Formal logic","Informal logic","non-formal logic","Symbolic logic"], ans:2},
+  {id:37, cat:"syllogism", text:"Logic supports philosophical inquiry through ……", opts:["Validity and Soundness","Good cause","Thinking","Good Idea"], ans:0},
+
+  // ── CRITICAL THINKING (Q38–62) ──
+  {id:38, cat:"critical", text:"…… helps clarify and precisely define concepts and making it possible for philosophers to argue, make meanings and draw implications.", opts:["Logic","Philosophical discussion","Logical analysis","none of the above"], ans:2},
+  {id:39, cat:"critical", text:"Good logic served as a trigger to the following except ……", opts:["Critical thinking","creativity","philosophy","none of the above"], ans:3},
+  {id:40, cat:"critical", text:"Critical thinking historical development can be found in the prototype of ……", opts:["Plato's work","Khaldun's solidarity","Freires' banking concept","Socrates' method of questioning"], ans:3},
+  {id:41, cat:"critical", text:"Paulo Freire's critical thinking perspective is all these except ……", opts:["Emancipate individual","Empower individual","domesticate individual","liberate individual"], ans:2},
+  {id:42, cat:"critical", text:"Critical thinking make individual to ……", opts:["Read the mind and world","read the ward","read the word","read the world"], ans:0},
+  {id:43, cat:"critical", text:"…… questions and challenge assumption.", opts:["Critical man","Critical ward","Critical mind","Critical person"], ans:2},
+  {id:44, cat:"critical", text:"Critical thinking empowers individual and groups ……", opts:["to distinguished between right and wrong","to reflect and take action","to engage in dialogue","all of the above"], ans:3},
+  {id:45, cat:"critical", text:"The absence of critical thinking skills in our everyday life might lead to ……", opts:["Unwanted opinions and beliefs","Lack the capacity for creativity","Poverty and disempowerment","All of the above"], ans:3},
+  {id:46, cat:"critical", text:"All these are components of critical thinking except ……", opts:["Taking for granted problem","Focusing on problems and questions","Identifying various problems","Identifying multiple assumptions"], ans:0},
+  {id:47, cat:"critical", text:"…… seems essential for understanding not only the workings of the human mind in its ability to generate new ideas.", opts:["Creativity","Logic","critical thinking","Philosophy"], ans:0},
+  {id:48, cat:"critical", text:"The following are the significance of creativity except ……", opts:["Creativity stimulates reflection and action","Creativity enhances intellectual skills","Creativity empowers individual and groups","None of the above"], ans:3},
+  {id:49, cat:"critical", text:"McLaren (1998) noted that to engage in the struggle for humanisation we need the following except ……", opts:["Good Intention","Reluctant approach","Social solidarity and social interdependence","Social justice"], ans:1},
+  {id:50, cat:"critical", text:'"The cat is on the mat" has its negation as:', opts:["it is true that the cat is on the mat","the cat is not on the mat","it is a cat that sleep on the mat","the statement has no negation"], ans:1},
+  {id:51, cat:"critical", text:"The experimental psychologists said varieties of human conduct are orally either ……", opts:["logical or sound","positive or negative","soul or mind","speculative or prescriptive"], ans:1},
+  {id:52, cat:"critical", text:"The prescriptive philosopher seeks to discover and to recommend ……………for describing what actions and qualities are most worthwhile.", opts:["approaches","Principles","nature","laws"], ans:1},
+  {id:53, cat:"critical", text:"…… Philosophy is the kind of philosophy that looks to explain how the world is.", opts:["Epistemology","Naturalism","Prescriptive","Historical"], ans:1},
+  {id:54, cat:"critical", text:"Prescriptive philosophy seeks to establish standards for assessing values, ……… and appraising art.", opts:["evaluating conducts","point of analysis","judgment of issues","equality of opportunity"], ans:0},
+  {id:55, cat:"critical", text:"The prescriptive philosopher seeks to discover and to recommend ………………for describing what actions and qualities are most worthwhile.", opts:["methods","laws","nature","Principles"], ans:3},
+  {id:56, cat:"critical", text:"Philosophers equally ask such questions as whether qualities are things in themselves or are projection of our ……", opts:["mind","soul","leg","body"], ans:0},
+  {id:57, cat:"critical", text:"…… philosopher seeks to discover and to recommend principles for describing what actions and qualities are most worthwhile.", opts:["Epistemology","Naturalism","Prescriptive","Historical"], ans:2},
+  {id:58, cat:"critical", text:"…… Philosophy focuses its direction towards meaning of philosophy.", opts:["Analytic","Historical","Epistemology","Prescriptive"], ans:0},
+  {id:59, cat:"critical", text:"…… philosophy aspires to a comprehensive understanding and explanation of the structural interrelations of the culture spheres of science, morality, art, and religion.", opts:["Angiology","historical","prescriptive","Speculative"], ans:3},
+  {id:60, cat:"critical", text:"Speculative philosophy is sometimes called ……", opts:["metaphysics","logic","axiology","analytic"], ans:0},
+  {id:61, cat:"critical", text:"In doing philosophy inferences or speculations must follow …… reasoning.", opts:["logical","sound","scientific","deductive"], ans:0},
+  {id:62, cat:"critical", text:"The Philosophy that is geared towards the establishment of standard ways for assessing values is called:", opts:["Analytic","Prescriptive","Historical","logic"], ans:1},
+  {id:63, cat:"critical", text:"Philosophy promotes all the following except ……", opts:["Axiology","Epistemology","Dogmatism","Aesthetics"], ans:2},
+
+  // ── PHILOSOPHY (Q64–100) ──
+  {id:64, cat:"philosophy", text:"All of the following are processes that we engage philosophy except ……", opts:["Asking questions","Media utilization","Answering questions","Raising arguments"], ans:1},
+  {id:65, cat:"philosophy", text:"…… is concerned with the origin, nature, sources, analysis, justification and limits of knowledge.", opts:["Cosmology","Axiology","Epistemology","Theology"], ans:2},
+  {id:66, cat:"philosophy", text:"Metaphysics as a branch of philosophy is literally defined as ……", opts:["Quantum Physics","Love of Physics","Beyond Physics","Philosophy of Physics"], ans:2},
+  {id:67, cat:"philosophy", text:"…… described metaphysics as the study of the first principles of things and the science of existence.", opts:["St. Plato","St. Paul","Aristotle","Max Weaver"], ans:2},
+  {id:68, cat:"philosophy", text:"Cosmology is the study of ……", opts:["The origin, nature and structure of the universe","The study of science and technology","The study of science of ontology","Universal education"], ans:0},
+  {id:69, cat:"philosophy", text:"Ontology is a branch of philosophy that is concerned with ……", opts:["Investigating the universe","Investigating the life of people","Investigating the orbit of the earth","Investigating reality"], ans:3},
+  {id:70, cat:"philosophy", text:"…… is purely based on norms.", opts:["Speculative philosophy","Moral philosophy","Prescriptive philosophy","Analytic philosophy"], ans:1},
+  {id:71, cat:"philosophy", text:"The main purpose of philosophy is to discourage ……", opts:["Lying","Cheating","Dogma","Selfishness"], ans:2},
+  {id:72, cat:"philosophy", text:"Aesthetics philosophy is concerned with ……", opts:["Appreciation of art and beauty","Appreciating sense perception","Appreciating knowledge","Appreciating the beauty of truth"], ans:0},
+  {id:73, cat:"philosophy", text:"One of the fundamental approaches of Analytic philosophy is ……", opts:["Being inquisitive","Being extra careful","Being controversial","Being suspicious"], ans:0},
+  {id:74, cat:"philosophy", text:"Axiology is another name for ethics as a branch of philosophy ……", opts:["Sometimes True","True","Sometimes False","False"], ans:1},
+  {id:75, cat:"philosophy", text:"Logic from the subject matter of philosophy is seen as ……", opts:["branch of philosophy","a tool of doing philosophy","problem of philosophy","all of the above"], ans:3},
+  {id:76, cat:"philosophy", text:"…… study's religions as they relate with the divine God.", opts:["Ontology","Theology","Cosmology","Geology"], ans:1},
+  {id:77, cat:"philosophy", text:"The study of the nature of values in philosophy is called ……", opts:["metaphysics","epistemology","axiology","none of the above"], ans:2},
+  {id:78, cat:"philosophy", text:"What I become tomorrow is dependent on ……", opts:["the decisions I make today","determinism by fate","my ability to be a philosopher","none of the above"], ans:0},
+  {id:79, cat:"philosophy", text:"Philosophy from the etymology philia + Sophia is seen from extreme point as ……", opts:["Going to school","epistemology","axiology","ethics"], ans:1},
+  {id:80, cat:"philosophy", text:"The sun and the nine planets are studied under which of the following branches of metaphysics?", opts:["Ontology","Cosmology","theodicy","theology"], ans:1},
+  {id:81, cat:"philosophy", text:"Theos in Greek language means ……", opts:["matter","wisdom","God","knowledge"], ans:2},
+  {id:82, cat:"philosophy", text:"The educational psychologists call which of the following types of knowledge as entry behaviour?", opts:["Knowledge by experience","Knowledge by authority","Knowledge by reason","Knowledge by acquaintance"], ans:0},
+  {id:83, cat:"philosophy", text:"Inter personal issues that affect how we relate with others is classed as ……", opts:["moral issues","non-moral issues","personal issues","ethical issues"], ans:0},
+  {id:84, cat:"philosophy", text:"The type knowledge we receive from specialists in their area of expertise is called ……", opts:["Knowledge by reason","knowledge by revelation","Knowledge by authority","knowledge by intuition"], ans:2},
+  {id:85, cat:"metaphysics", text:"The mind, soul, spirits and God are concepts studied in one of the branches of philosophy called ……", opts:["Axiology","Epistemology","Metaphysics","Logic"], ans:2},
+  {id:86, cat:"metaphysics", text:"The following are subdivisions of metaphysics with the exclusion of ……", opts:["ontology","cosmology","geology","theology"], ans:2},
+  {id:87, cat:"metaphysics", text:"Who among the following philosophers is associated with Dualism?", opts:["Plato","Hegel","Rousseau","Descartes"], ans:3},
+  {id:88, cat:"philosophy", text:'"it is not the consciousness of men that determines their existenceiousness but their existence that determines their consciousness" is a statement credited to ……', opts:["Plato","Thomas Hobbes","Karl Marx","Aristotle"], ans:2},
+  {id:89, cat:"philosophy", text:"Who among the following are closer to the idealists?", opts:["Realists","Socialists","Existentialists","Believers"], ans:3},
+  {id:90, cat:"philosophy", text:"Which of the following is a key philosopher among the idealists?", opts:["Vladimir Lenin","Friedrich Engels","Karl Marx","none of the above"], ans:3},
+  {id:91, cat:"philosophy", text:"One of the following themes in philosophy is of the view that there is no reality outside idea.", opts:["Dualism","Existentialism","Idealism","Materialism"], ans:2},
+  {id:92, cat:"philosophy", text:"Which of the following is closer to the scientific view of reality?", opts:["Empiricism","Dualism","Idealism","Existentialism"], ans:0},
+  {id:93, cat:"philosophy", text:"Eclecticism is the term that best describes one of the following:", opts:["Materialism","Existentialism","Idealism","Dualism"], ans:3},
+  {id:94, cat:"philosophy", text:"The view that everything is part of nature is to be found among the ……", opts:["Existentialists","Dualists","Idealists","Materialists"], ans:1},
+  {id:95, cat:"philosophy", text:"Which of the following is closer to the materialists view of reality?", opts:["Empiricism","Existentialism","Idealism","Materialism"], ans:3},
+  {id:96, cat:"philosophy", text:"The idea of destiny can best be accommodated among the ……", opts:["Existentialists","Naturalists","Idealists","Dualists"], ans:1},
+  {id:97, cat:"philosophy", text:"Who among the following is associated with materialism?", opts:["Thomas Hobbes","Plato","Socrates","Aristotle"], ans:0},
+  {id:98, cat:"philosophy", text:'The statement that "philosophers have only interpreted the world in different forms, the point, however is to change it" is credited to:', opts:["Vladimir Lenin","Fidel Castro","Plato","Karl Marx"], ans:3},
+];
+
+// ── State ──
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let selectedMode = "full";
+let selectedCat = "all";
+
+// ── Category selection ──
+document.querySelectorAll('#cat-filter .cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#cat-filter .cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedCat = btn.dataset.cat;
+  });
+});
+
+function selectMode(el) {
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedMode = el.dataset.mode;
+}
+
+function getFilteredQuestions() {
+  let qs = selectedCat === 'all' ? [...ALL_QUESTIONS] : ALL_QUESTIONS.filter(q => q.cat === selectedCat);
+  if (selectedMode === 'practice') {
+    shuffle(qs);
+    return qs.slice(0, Math.min(20, qs.length));
+  } else if (selectedMode === 'speed') {
+    shuffle(qs);
+    return qs.slice(0, Math.min(10, qs.length));
+  }
+  return qs;
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+function startQuiz() {
+  currentQuestions = getFilteredQuestions();
+  currentIndex = 0;
+  score = 0;
+  document.getElementById('quiz-header').style.display = 'flex';
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function renderQuestion() {
+  if (currentIndex >= currentQuestions.length) {
+    showResults();
+    return;
+  }
+  answered = false;
+  const q = currentQuestions[currentIndex];
+  const total = currentQuestions.length;
+  const pct = (currentIndex / total) * 100;
+
+  document.getElementById('q-counter').textContent = `Question ${currentIndex + 1} of ${total}`;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('score-display').textContent = score;
+  document.getElementById('q-num').textContent = `Q${q.id}`;
+  document.getElementById('q-topic').textContent = catLabel(q.cat);
+  document.getElementById('q-text').textContent = q.text;
+
+  const optList = document.getElementById('options-list');
+  optList.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.addEventListener('click', () => selectAnswer(i, q.ans));
+    optList.appendChild(btn);
+  });
+
+  const fb = document.getElementById('feedback-box');
+  fb.className = 'feedback-box';
+  document.getElementById('btn-next').classList.remove('show');
+}
+
+function catLabel(cat) {
+  const map = {logic:'Logic',fallacies:'Fallacies',syllogism:'Syllogism',philosophy:'Philosophy',metaphysics:'Metaphysics',critical:'Critical Thinking'};
+  return map[cat] || cat;
+}
+
+function selectAnswer(chosen, correct) {
+  if (answered) return;
+  answered = true;
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const isCorrect = chosen === correct;
+  if (isCorrect) {
+    btns[chosen].classList.add('correct');
+    score++;
+    document.getElementById('score-display').textContent = score;
+  } else {
+    btns[chosen].classList.add('wrong');
+    btns[correct].classList.add('reveal-correct');
+  }
+
+  const fb = document.getElementById('feedback-box');
+  const fbIcon = document.getElementById('fb-icon');
+  const fbText = document.getElementById('fb-text');
+
+  if (isCorrect) {
+    fb.className = 'feedback-box show correct-fb';
+    fbIcon.textContent = '✓';
+    fbText.textContent = 'Correct! Well done.';
+  } else {
+    const letters = ['A','B','C','D'];
+    fb.className = 'feedback-box show wrong-fb';
+    fbIcon.textContent = '✗';
+    fbText.textContent = `Incorrect. The correct answer is ${letters[correct]}: ${currentQuestions[currentIndex].opts[correct]}.`;
+  }
+
+  document.getElementById('btn-next').classList.add('show');
+}
+
+function nextQuestion() {
+  currentIndex++;
+  renderQuestion();
+}
+
+function showResults() {
+  const total = currentQuestions.length;
+  const pct = Math.round((score / total) * 100);
+  document.getElementById('quiz-header').style.display = 'none';
+  showScreen('screen-results');
+  document.getElementById('result-grade').textContent = pct + '%';
+  document.getElementById('res-correct').textContent = score;
+  document.getElementById('res-wrong').textContent = total - score;
+  document.getElementById('res-total').textContent = total;
+
+  let trophy, label, msg;
+  if (pct >= 90) { trophy = '🏆'; label = 'Outstanding!'; msg = 'Exceptional performance! You have an excellent grasp of Philosophy, Logic and Human Existence.'; }
+  else if (pct >= 70) { trophy = '🎓'; label = 'Very Good!'; msg = 'Great work! You understand most concepts well. Review a few areas to reach mastery.'; }
+  else if (pct >= 50) { trophy = '📚'; label = 'Pass'; msg = 'You passed! Focus on reviewing the topics you missed to strengthen your understanding.'; }
+  else { trophy = '💪'; label = 'Keep Studying'; msg = 'Keep at it! Review your notes on the weaker areas — Logic, Fallacies, and Philosophy fundamentals.'; }
+
+  document.getElementById('result-trophy').textContent = trophy;
+  document.getElementById('result-label').textContent = label;
+  document.getElementById('result-message').textContent = msg;
+}
+
+function restartSame() {
+  currentQuestions = getFilteredQuestions();
+  currentIndex = 0;
+  score = 0;
+  document.getElementById('quiz-header').style.display = 'flex';
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+
+function goHome() {
+  document.getElementById('quiz-header').style.display = 'none';
+  showScreen('screen-start');
+}
+</script>
+
+</body></html>
